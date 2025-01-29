@@ -16,7 +16,7 @@ namespace KN_ProyectoClase
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Personas", action = "RegistrarPersona", id = UrlParameter.Optional }
+                defaults: new { controller = "Principal", action = "Inicio", id = UrlParameter.Optional }
             );
         }
     }
