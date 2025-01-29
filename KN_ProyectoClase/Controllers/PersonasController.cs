@@ -13,7 +13,7 @@ namespace KN_ProyectoClase.Controllers
         public ActionResult RegistrarPersona()
         {
             var personasModelo = new PersonasModel();
-            personasModelo.Nombre = "EDUARDO";
+            personasModelo.Nombre = "PROFESOR";
 
             return View(personasModelo);
         }
