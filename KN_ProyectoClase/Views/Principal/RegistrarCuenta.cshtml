@@ -12,21 +12,26 @@
             <div class="card-body p-0">
 
                 <div class="row">
-                    <div class="col-lg-3"></div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Iniciar Sesión</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Crear Cuenta</h1>
                             </div>
                             <form class="user">
                                 <div class="form-group">
                                     @Html.TextBoxFor(x => x.Identificacion, new { @class = "form-control form-control-user", @placeholder = "Identificación" })
                                 </div>
                                 <div class="form-group">
+                                    @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control form-control-user", @placeholder = "Nombre" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(x => x.Correo, new { @class = "form-control form-control-user", @placeholder = "Correo" })
+                                </div>
+                                <div class="form-group">
                                     @Html.TextBoxFor(x => x.Contrasenna, new { @class = "form-control form-control-user", @placeholder = "Contraseña", @type = "password" })
                                 </div>
-
-                                <a href="index.html" class="btn btn-danger btn-user btn-block">
+                                <a href="login.html" class="btn btn-danger btn-user btn-block">
                                     Procesar
                                 </a>
 
@@ -36,7 +41,7 @@
                                 <a class="small" href="@Url.Action("RecuperarContrasenna","Principal")">Recuperar Contraseña?</a>
                             </div>
                             <div class="text-center">
-                                <a class="small" href="@Url.Action("RegistrarCuenta","Principal")">Crear una cuenta!</a>
+                                <a class="small" href="@Url.Action("IniciarSesion","Principal")">Iniciar Sesión!</a>
                             </div>
                             <div class="text-center">
                                 <a class="small" href="@Url.Action("Inicio","Principal")">Pantalla Principal!</a>
@@ -44,10 +49,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-
     </div>
-
 </div>

@@ -20,5 +20,17 @@ namespace KN_ProyectoClase.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult RegistrarCuenta()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult RecuperarContrasenna()
+        {
+            return View();
+        }
+
     }
 }

@@ -194,6 +194,8 @@
     <Content Include="Template\webfonts\fa-solid-900.woff2" />
     <Content Include="Views\Shared\_LayoutExterno.cshtml" />
     <Content Include="Views\Principal\IniciarSesion.cshtml" />
+    <Content Include="Views\Principal\RegistrarCuenta.cshtml" />
+    <Content Include="Views\Principal\RecuperarContrasenna.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
