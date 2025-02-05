@@ -1,4 +1,5 @@
-﻿using KN_ProyectoClase.Models;
+﻿using KN_ProyectoClase.BaseDatos;
+using KN_ProyectoClase.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +21,61 @@ namespace KN_ProyectoClase.Controllers
         [HttpPost]
         public ActionResult RegistrarCuenta(UsuarioModel model)
         {
+            //EF utilizando LinQ
+            using (var context = new KN_DBEntities())
+            {
+                Usuario tabla = new Usuario();
+                tabla.Identificacion = model.Identificacion;
+                tabla.Contrasenna = model.Contrasenna;
+                tabla.Nombre = model.Nombre;
+                tabla.Correo = model.Correo;
+                tabla.Estado = true;
+                tabla.IdPerfil = 2;
+
+                context.Usuario.Add(tabla);
+                context.SaveChanges();
+
+                //EF utilizando Procedimientos Almacenados
+                //context.RegistrarCuenta(model.Identificacion, model.Contrasenna, model.Nombre, model.Correo);
+            }
+
             return View();
         }
 
         #endregion
 
+        #region 
 
+        [HttpGet]
+        public ActionResult IniciarSesion()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult IniciarSesion(UsuarioModel model)
+        {
+            using (var context = new KN_DBEntities())
+            {
+                //EF utilizando LinQ
+                //var info = context.Usuario.
+                //Where(x => x.Identificacion == model.Identificacion
+                //&& x.Contrasenna == model.Contrasenna
+                //&& x.Estado == true).FirstOrDefault();
+
+                //EF utilizando Procedimientos Almacenados
+                var info = context.IniciarSesion(model.Identificacion, model.Contrasenna).FirstOrDefault();
+
+                if (info != null)
+                {
+                    return RedirectToAction("Inicio","Principal");
+                }
+            }
+                            
+            return View();
+        }
+
+        #endregion
 
 
 
@@ -35,11 +85,7 @@ namespace KN_ProyectoClase.Controllers
             return View();
         }
 
-        [HttpGet]
-        public ActionResult IniciarSesion()
-        {
-            return View();
-        }
+        
 
         
 

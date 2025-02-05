@@ -32,17 +32,36 @@ CREATE TABLE [dbo].[Usuario](
 ) ON [PRIMARY]
 GO
 
-SET IDENTITY_INSERT [dbo].[Perfil] ON 
-GO
-INSERT [dbo].[Perfil] ([Id], [Nombre]) VALUES (1, N'Administrador')
-GO
-INSERT [dbo].[Perfil] ([Id], [Nombre]) VALUES (2, N'Cliente')
-GO
-SET IDENTITY_INSERT [dbo].[Perfil] OFF
-GO
-
 ALTER TABLE [dbo].[Usuario]  WITH CHECK ADD  CONSTRAINT [FK_Usuario_Perfil] FOREIGN KEY([IdPerfil])
 REFERENCES [dbo].[Perfil] ([Id])
 GO
 ALTER TABLE [dbo].[Usuario] CHECK CONSTRAINT [FK_Usuario_Perfil]
+GO
+
+CREATE PROCEDURE [dbo].[IniciarSesion]
+	@Identificacion varchar(15),
+	@Contrasenna varchar(15)
+AS
+BEGIN
+	
+	SELECT Id, Identificacion, Contrasenna, Nombre, Correo, Estado, IdPerfil
+	FROM dbo.Usuario
+	WHERE	Identificacion = @Identificacion
+		AND Contrasenna = @Contrasenna
+		AND Estado = 1
+END
+GO
+
+CREATE PROCEDURE [dbo].[RegistrarCuenta]
+	@Identificacion varchar(15),
+	@Contrasenna varchar(15),
+	@Nombre varchar(200),
+	@Correo varchar(200)
+AS
+BEGIN
+	
+	INSERT INTO dbo.Usuario (Identificacion,Contrasenna,Nombre,Correo,Estado,IdPerfil)
+	VALUES (@Identificacion,@Contrasenna,@Nombre,@Correo,1,2)
+
+END
 GO

@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="KN_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Perfil">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Identificacion" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Contrasenna" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Correo" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
+          <Property Name="IdPerfil" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Usuario_Perfil">
+          <End Role="Perfil" Type="Self.Perfil" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Perfil">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="IdPerfil" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="IniciarSesion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Identificacion" Type="varchar" Mode="In" />
+          <Parameter Name="Contrasenna" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="RegistrarCuenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Identificacion" Type="varchar" Mode="In" />
+          <Parameter Name="Contrasenna" Type="varchar" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Correo" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="KN_DBModelStoreContainer">
+          <EntitySet Name="Perfil" EntityType="Self.Perfil" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Usuario_Perfil" Association="Self.FK_Usuario_Perfil">
+            <End Role="Perfil" EntitySet="Perfil" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="KN_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Perfil">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Usuario_Perfil" FromRole="Perfil" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Identificacion" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Contrasenna" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <Property Name="IdPerfil" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Perfil" Relationship="Self.FK_Usuario_Perfil" FromRole="Usuario" ToRole="Perfil" />
+        </EntityType>
+        <Association Name="FK_Usuario_Perfil">
+          <End Role="Perfil" Type="Self.Perfil" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Perfil">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="IdPerfil" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="KN_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Perfil" EntityType="Self.Perfil" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK_Usuario_Perfil" Association="Self.FK_Usuario_Perfil">
+            <End Role="Perfil" EntitySet="Perfil" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <FunctionImport Name="RegistrarCuenta">
+            <Parameter Name="Identificacion" Mode="In" Type="String" />
+            <Parameter Name="Contrasenna" Mode="In" Type="String" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Correo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="IniciarSesion" ReturnType="Collection(KN_DBModel.IniciarSesion_Result)">
+            <Parameter Name="Identificacion" Mode="In" Type="String" />
+            <Parameter Name="Contrasenna" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="IniciarSesion_Result">
+          <Property Type="Int64" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Identificacion" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Contrasenna" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Correo" Nullable="false" MaxLength="100" />
+          <Property Type="Boolean" Name="Estado" Nullable="false" />
+          <Property Type="Int32" Name="IdPerfil" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="KN_DBModelStoreContainer" CdmEntityContainer="KN_DBEntities">
+          <EntitySetMapping Name="Perfil">
+            <EntityTypeMapping TypeName="KN_DBModel.Perfil">
+              <MappingFragment StoreEntitySet="Perfil">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="KN_DBModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
+                <ScalarProperty Name="Contrasenna" ColumnName="Contrasenna" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="RegistrarCuenta" FunctionName="KN_DBModel.Store.RegistrarCuenta" />
+          <FunctionImportMapping FunctionImportName="IniciarSesion" FunctionName="KN_DBModel.Store.IniciarSesion">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KN_DBModel.IniciarSesion_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
+                <ScalarProperty Name="Contrasenna" ColumnName="Contrasenna" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
