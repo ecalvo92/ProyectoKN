@@ -18,7 +18,9 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Crear Cuenta</h1>
                             </div>
-                            <form class="user">
+
+                            @using(Html.BeginForm("RegistrarCuenta", "Principal"))
+                            {
                                 <div class="form-group">
                                     @Html.TextBoxFor(x => x.Identificacion, new { @class = "form-control form-control-user", @placeholder = "Identificación" })
                                 </div>
@@ -31,11 +33,9 @@
                                 <div class="form-group">
                                     @Html.TextBoxFor(x => x.Contrasenna, new { @class = "form-control form-control-user", @placeholder = "Contraseña", @type = "password" })
                                 </div>
-                                <a href="login.html" class="btn btn-danger btn-user btn-block">
-                                    Procesar
-                                </a>
+                                <input type="submit" class="btn btn-danger btn-user btn-block" value="Procesar">
+                            }
 
-                            </form>
                             <hr>
                             <div class="text-center">
                                 <a class="small" href="@Url.Action("RecuperarContrasenna","Principal")">Recuperar Contraseña?</a>
