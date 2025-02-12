@@ -24,22 +24,28 @@ namespace KN_ProyectoClase.Controllers
             //EF utilizando LinQ
             using (var context = new KN_DBEntities())
             {
-                Usuario tabla = new Usuario();
-                tabla.Identificacion = model.Identificacion;
-                tabla.Contrasenna = model.Contrasenna;
-                tabla.Nombre = model.Nombre;
-                tabla.Correo = model.Correo;
-                tabla.Estado = true;
-                tabla.IdPerfil = 2;
+                //Usuario tabla = new Usuario();
+                //tabla.Identificacion = model.Identificacion;
+                //tabla.Contrasenna = model.Contrasenna;
+                //tabla.Nombre = model.Nombre;
+                //tabla.Correo = model.Correo;
+                //tabla.Estado = true;
+                //tabla.IdPerfil = 2;
 
-                context.Usuario.Add(tabla);
-                context.SaveChanges();
+                //context.Usuario.Add(tabla);
+                //var result = context.SaveChanges();
 
                 //EF utilizando Procedimientos Almacenados
-                //context.RegistrarCuenta(model.Identificacion, model.Contrasenna, model.Nombre, model.Correo);
-            }
+                var result = context.RegistrarCuenta(model.Identificacion, model.Contrasenna, model.Nombre, model.Correo);
 
-            return View();
+                if (result > 0)
+                    return RedirectToAction("IniciarSesion", "Principal");
+                else
+                {
+                    ViewBag.Mensaje = "Su información no se ha podido registrar correctamente";
+                    return View();
+                }
+            }            
         }
 
         #endregion
@@ -68,11 +74,15 @@ namespace KN_ProyectoClase.Controllers
 
                 if (info != null)
                 {
-                    return RedirectToAction("Inicio","Principal");
+                    Session["NombreUsuario"] = info.Nombre;
+                    return RedirectToAction("Inicio", "Principal");
+                }
+                else
+                {
+                    ViewBag.Mensaje = "Su información no se ha podido validar correctamente";
+                    return View();
                 }
             }
-                            
-            return View();
         }
 
         #endregion

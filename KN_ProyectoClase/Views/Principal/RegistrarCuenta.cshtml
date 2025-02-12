@@ -19,19 +19,26 @@
                                 <h1 class="h4 text-gray-900 mb-4">Crear Cuenta</h1>
                             </div>
 
-                            @using(Html.BeginForm("RegistrarCuenta", "Principal"))
+                            @if(ViewBag.Mensaje != null)
+                            { 
+                                <div class="alert alert-warning msjCentrado">
+                                    @ViewBag.Mensaje
+                                </div>
+                            }
+
+                            @using (Html.BeginForm("RegistrarCuenta", "Principal"))
                             {
                                 <div class="form-group">
-                                    @Html.TextBoxFor(x => x.Identificacion, new { @class = "form-control form-control-user", @placeholder = "Identificación" })
+                                    @Html.TextBoxFor(x => x.Identificacion, new { @class = "form-control form-control-user", @placeholder = "Identificación", @Required = "true" })
                                 </div>
                                 <div class="form-group">
-                                    @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control form-control-user", @placeholder = "Nombre" })
+                                    @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control form-control-user", @placeholder = "Nombre", @Required = "true" })
                                 </div>
                                 <div class="form-group">
-                                    @Html.TextBoxFor(x => x.Correo, new { @class = "form-control form-control-user", @placeholder = "Correo" })
+                                    @Html.TextBoxFor(x => x.Correo, new { @class = "form-control form-control-user", @type = "Email", @placeholder = "Correo", @Required = "true" })
                                 </div>
                                 <div class="form-group">
-                                    @Html.TextBoxFor(x => x.Contrasenna, new { @class = "form-control form-control-user", @placeholder = "Contraseña", @type = "password" })
+                                    @Html.TextBoxFor(x => x.Contrasenna, new { @class = "form-control form-control-user", @placeholder = "Contraseña", @type = "password", @Required = "true" })
                                 </div>
                                 <input type="submit" class="btn btn-danger btn-user btn-block" value="Procesar">
                             }
