@@ -32,6 +32,36 @@ CREATE TABLE [dbo].[Usuario](
 ) ON [PRIMARY]
 GO
 
+SET IDENTITY_INSERT [dbo].[Perfil] ON 
+GO
+INSERT [dbo].[Perfil] ([Id], [Nombre]) VALUES (1, N'Administrador')
+GO
+INSERT [dbo].[Perfil] ([Id], [Nombre]) VALUES (2, N'Cliente')
+GO
+SET IDENTITY_INSERT [dbo].[Perfil] OFF
+GO
+
+SET IDENTITY_INSERT [dbo].[Usuario] ON 
+GO
+INSERT [dbo].[Usuario] ([Id], [Identificacion], [Contrasenna], [Nombre], [Correo], [Estado], [IdPerfil]) VALUES (4, N'304590415', N'90415', N'Eduardo Calvo Castillo', N'ecalvo90415@ufide.ac.cr', 1, 2)
+GO
+INSERT [dbo].[Usuario] ([Id], [Identificacion], [Contrasenna], [Nombre], [Correo], [Estado], [IdPerfil]) VALUES (6, N'305440468', N'40468', N'Fabricio Arce Salas', N'farce40468@ufide.ac.cr', 1, 2)
+GO
+SET IDENTITY_INSERT [dbo].[Usuario] OFF
+GO
+
+ALTER TABLE [dbo].[Usuario] ADD  CONSTRAINT [UK_Correo] UNIQUE NONCLUSTERED 
+(
+	[Correo] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Usuario] ADD  CONSTRAINT [UK_Identificacion] UNIQUE NONCLUSTERED 
+(
+	[Identificacion] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
 ALTER TABLE [dbo].[Usuario]  WITH CHECK ADD  CONSTRAINT [FK_Usuario_Perfil] FOREIGN KEY([IdPerfil])
 REFERENCES [dbo].[Perfil] ([Id])
 GO
@@ -60,8 +90,15 @@ CREATE PROCEDURE [dbo].[RegistrarCuenta]
 AS
 BEGIN
 	
-	INSERT INTO dbo.Usuario (Identificacion,Contrasenna,Nombre,Correo,Estado,IdPerfil)
-	VALUES (@Identificacion,@Contrasenna,@Nombre,@Correo,1,2)
+	IF NOT EXISTS(SELECT 1 FROM dbo.Usuario
+				  WHERE Identificacion = @Identificacion
+					 OR Correo = @Correo)
+	BEGIN
+
+		INSERT INTO dbo.Usuario (Identificacion,Contrasenna,Nombre,Correo,Estado,IdPerfil)
+		VALUES (@Identificacion,@Contrasenna,@Nombre,@Correo,1,2)
+
+	END
 
 END
 GO

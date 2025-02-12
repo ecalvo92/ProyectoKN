@@ -29,10 +29,10 @@
                             @using (Html.BeginForm("RegistrarCuenta", "Principal"))
                             {
                                 <div class="form-group">
-                                    @Html.TextBoxFor(x => x.Identificacion, new { @class = "form-control form-control-user", @placeholder = "Identificación", @Required = "true" })
+                                    @Html.TextBoxFor(x => x.Identificacion, new { @class = "form-control form-control-user", @placeholder = "Identificación", @Required = "true", @onkeyup="ConsultarNombre();" })
                                 </div>
                                 <div class="form-group">
-                                    @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control form-control-user", @placeholder = "Nombre", @Required = "true" })
+                                    @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control form-control-user", @placeholder = "Nombre", @Required = "true", @ReadOnly="true" })
                                 </div>
                                 <div class="form-group">
                                     @Html.TextBoxFor(x => x.Correo, new { @class = "form-control form-control-user", @type = "Email", @placeholder = "Correo", @Required = "true" })

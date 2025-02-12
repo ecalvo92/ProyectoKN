@@ -95,9 +95,12 @@ namespace KN_ProyectoClase.Controllers
             return View();
         }
 
-        
-
-        
+        [HttpGet]
+        public ActionResult CerrarSesion()
+        {
+            Session.Clear();
+            return RedirectToAction("Inicio", "Principal");
+        }
 
         [HttpGet]
         public ActionResult RecuperarContrasenna()
