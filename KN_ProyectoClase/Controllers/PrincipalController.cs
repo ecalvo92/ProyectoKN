@@ -74,7 +74,9 @@ namespace KN_ProyectoClase.Controllers
 
                 if (info != null)
                 {
-                    Session["NombreUsuario"] = info.Nombre;
+                    Session["NombreUsuario"] = info.NombreUsuario;
+                    Session["NombrePerfilUsuario"] = info.NombrePerfil;
+                    Session["IdPerfilUsuario"] = info.IdPerfil;
                     return RedirectToAction("Inicio", "Principal");
                 }
                 else

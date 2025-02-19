@@ -11,15 +11,10 @@ namespace KN_ProyectoClase.BaseDatos
 {
     using System;
     
-    public partial class IniciarSesion_Result
+    public partial class ConsultarPuestos_Result
     {
         public long Id { get; set; }
-        public string Identificacion { get; set; }
-        public string Contrasenna { get; set; }
-        public string NombreUsuario { get; set; }
-        public string Correo { get; set; }
-        public bool Estado { get; set; }
-        public int IdPerfil { get; set; }
-        public string NombrePerfil { get; set; }
+        public string Nombre { get; set; }
+        public string Descripcion { get; set; }
     }
 }

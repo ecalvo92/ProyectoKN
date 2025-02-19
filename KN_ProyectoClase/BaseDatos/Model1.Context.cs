@@ -28,7 +28,21 @@ namespace KN_ProyectoClase.BaseDatos
         }
     
         public virtual DbSet<Perfil> Perfil { get; set; }
+        public virtual DbSet<Puesto> Puesto { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
+    
+        public virtual ObjectResult<IniciarSesion_Result> IniciarSesion(string identificacion, string contrasenna)
+        {
+            var identificacionParameter = identificacion != null ?
+                new ObjectParameter("Identificacion", identificacion) :
+                new ObjectParameter("Identificacion", typeof(string));
+    
+            var contrasennaParameter = contrasenna != null ?
+                new ObjectParameter("Contrasenna", contrasenna) :
+                new ObjectParameter("Contrasenna", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<IniciarSesion_Result>("IniciarSesion", identificacionParameter, contrasennaParameter);
+        }
     
         public virtual int RegistrarCuenta(string identificacion, string contrasenna, string nombre, string correo)
         {
@@ -51,17 +65,9 @@ namespace KN_ProyectoClase.BaseDatos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RegistrarCuenta", identificacionParameter, contrasennaParameter, nombreParameter, correoParameter);
         }
     
-        public virtual ObjectResult<IniciarSesion_Result> IniciarSesion(string identificacion, string contrasenna)
+        public virtual ObjectResult<ConsultarPuestos_Result> ConsultarPuestos()
         {
-            var identificacionParameter = identificacion != null ?
-                new ObjectParameter("Identificacion", identificacion) :
-                new ObjectParameter("Identificacion", typeof(string));
-    
-            var contrasennaParameter = contrasenna != null ?
-                new ObjectParameter("Contrasenna", contrasenna) :
-                new ObjectParameter("Contrasenna", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<IniciarSesion_Result>("IniciarSesion", identificacionParameter, contrasennaParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ConsultarPuestos_Result>("ConsultarPuestos");
         }
     }
 }

@@ -12,6 +12,14 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="Puesto">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
         <EntityType Name="Usuario">
           <Key>
             <PropertyRef Name="Id" />
@@ -36,6 +44,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="ConsultarPuestos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="IniciarSesion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Identificacion" Type="varchar" Mode="In" />
           <Parameter Name="Contrasenna" Type="varchar" Mode="In" />
@@ -48,6 +57,7 @@
         </Function>
         <EntityContainer Name="KN_DBModelStoreContainer">
           <EntitySet Name="Perfil" EntityType="Self.Perfil" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Puesto" EntityType="Self.Puesto" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Usuario_Perfil" Association="Self.FK_Usuario_Perfil">
             <End Role="Perfil" EntitySet="Perfil" />
@@ -65,6 +75,14 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_Usuario_Perfil" FromRole="Perfil" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Puesto">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="Usuario">
           <Key>
@@ -93,30 +111,38 @@
         </Association>
         <EntityContainer Name="KN_DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Perfil" EntityType="Self.Perfil" />
+          <EntitySet Name="Puesto" EntityType="Self.Puesto" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" />
           <AssociationSet Name="FK_Usuario_Perfil" Association="Self.FK_Usuario_Perfil">
             <End Role="Perfil" EntitySet="Perfil" />
             <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
+          <FunctionImport Name="IniciarSesion" ReturnType="Collection(KN_DBModel.IniciarSesion_Result)">
+            <Parameter Name="Identificacion" Mode="In" Type="String" />
+            <Parameter Name="Contrasenna" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="RegistrarCuenta">
             <Parameter Name="Identificacion" Mode="In" Type="String" />
             <Parameter Name="Contrasenna" Mode="In" Type="String" />
             <Parameter Name="Nombre" Mode="In" Type="String" />
             <Parameter Name="Correo" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="IniciarSesion" ReturnType="Collection(KN_DBModel.IniciarSesion_Result)">
-            <Parameter Name="Identificacion" Mode="In" Type="String" />
-            <Parameter Name="Contrasenna" Mode="In" Type="String" />
-          </FunctionImport>
+          <FunctionImport Name="ConsultarPuestos" ReturnType="Collection(KN_DBModel.ConsultarPuestos_Result)" />
         </EntityContainer>
         <ComplexType Name="IniciarSesion_Result">
           <Property Type="Int64" Name="Id" Nullable="false" />
           <Property Type="String" Name="Identificacion" Nullable="false" MaxLength="15" />
           <Property Type="String" Name="Contrasenna" Nullable="false" MaxLength="15" />
-          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="NombreUsuario" Nullable="false" MaxLength="200" />
           <Property Type="String" Name="Correo" Nullable="false" MaxLength="100" />
           <Property Type="Boolean" Name="Estado" Nullable="false" />
           <Property Type="Int32" Name="IdPerfil" Nullable="false" />
+          <Property Type="String" Name="NombrePerfil" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="ConsultarPuestos_Result">
+          <Property Type="Int64" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Descripcion" Nullable="false" MaxLength="255" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -129,6 +155,15 @@
               <MappingFragment StoreEntitySet="Perfil">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Puesto">
+            <EntityTypeMapping TypeName="KN_DBModel.Puesto">
+              <MappingFragment StoreEntitySet="Puesto">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -145,17 +180,27 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="RegistrarCuenta" FunctionName="KN_DBModel.Store.RegistrarCuenta" />
           <FunctionImportMapping FunctionImportName="IniciarSesion" FunctionName="KN_DBModel.Store.IniciarSesion">
             <ResultMapping>
               <ComplexTypeMapping TypeName="KN_DBModel.IniciarSesion_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
                 <ScalarProperty Name="Contrasenna" ColumnName="Contrasenna" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
                 <ScalarProperty Name="Correo" ColumnName="Correo" />
                 <ScalarProperty Name="Estado" ColumnName="Estado" />
                 <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
+                <ScalarProperty Name="NombrePerfil" ColumnName="NombrePerfil" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RegistrarCuenta" FunctionName="KN_DBModel.Store.RegistrarCuenta" />
+          <FunctionImportMapping FunctionImportName="ConsultarPuestos" FunctionName="KN_DBModel.Store.ConsultarPuestos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KN_DBModel.ConsultarPuestos_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
