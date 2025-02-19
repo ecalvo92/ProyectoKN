@@ -12,19 +12,14 @@ namespace KN_ProyectoClase.BaseDatos
     using System;
     using System.Collections.Generic;
     
-    public partial class Puesto
+    public partial class Oferta
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Puesto()
-        {
-            this.Oferta = new HashSet<Oferta>();
-        }
-    
         public long Id { get; set; }
-        public string Nombre { get; set; }
-        public string Descripcion { get; set; }
+        public long IdPuesto { get; set; }
+        public int Cantidad { get; set; }
+        public decimal Salario { get; set; }
+        public string Horario { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Oferta> Oferta { get; set; }
+        public virtual Puesto Puesto { get; set; }
     }
 }

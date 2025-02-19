@@ -9,6 +9,8 @@
         <EntityTypeShape EntityType="KN_DBModel.Puesto" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="KN_DBModel.Usuario" Width="1.5" PointX="6.75" PointY="2.25" IsExpanded="true" />
         <AssociationConnector Association="KN_DBModel.FK_Usuario_Perfil" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="KN_DBModel.Oferta" Width="1.5" PointX="3" PointY="4.5" />
+        <AssociationConnector Association="KN_DBModel.FK_Oferta_Puesto" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

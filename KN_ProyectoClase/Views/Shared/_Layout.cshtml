@@ -44,19 +44,35 @@
                 <li class="nav-item">
                     <a class="nav-link" href="@Url.Action("ConsultarPuestos", "Puesto")">
                         <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Puestos</span>
+                        <span>Mant. Puestos</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("ConsultarOfertas", "Oferta")">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Mant. Ofertas</span>
+                    </a>
+                </li>
+            }
+            else
+            { 
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("ConsultarOfertasDisponibles", "Oferta")">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Ver Ofertas</span>
                     </a>
                 </li>
             }
 
 
-                <hr class="sidebar-divider d-none d-md-block">
+            <hr class="sidebar-divider d-none d-md-block">
 
-                <div class="text-center d-none d-md-inline">
-                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
-                </div>
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
 
-            </ul>
+        </ul>
 
         <div id="content-wrapper" class="d-flex flex-column">
 

@@ -1,0 +1,9 @@
+﻿@model KN_ProyectoClase.Models.OfertaModel
+
+@{
+    ViewBag.Title = "AgregarOferta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.DropDownListFor(m => m.IdPuesto, (IEnumerable<SelectListItem>)ViewBag.PuestoCombo, new { @class = "form-control" })
+
