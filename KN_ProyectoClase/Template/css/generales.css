@@ -1,3 +1,8 @@
 ﻿.msjCentrado {
     text-align: center;
 }
+
+.Margen {
+    margin: 10px 10px 10px 10px;
+    text-align: right;
+}

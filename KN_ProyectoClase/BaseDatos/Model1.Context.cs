@@ -27,10 +27,21 @@ namespace KN_ProyectoClase.BaseDatos
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Oferta> Oferta { get; set; }
         public virtual DbSet<Perfil> Perfil { get; set; }
         public virtual DbSet<Puesto> Puesto { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
-        public virtual DbSet<Oferta> Oferta { get; set; }
+        public virtual DbSet<UsuariosOferta> UsuariosOferta { get; set; }
+    
+        public virtual ObjectResult<ConsultarOfertas_Result> ConsultarOfertas()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ConsultarOfertas_Result>("ConsultarOfertas");
+        }
+    
+        public virtual ObjectResult<ConsultarPuestos_Result> ConsultarPuestos()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ConsultarPuestos_Result>("ConsultarPuestos");
+        }
     
         public virtual ObjectResult<IniciarSesion_Result> IniciarSesion(string identificacion, string contrasenna)
         {
@@ -64,16 +75,6 @@ namespace KN_ProyectoClase.BaseDatos
                 new ObjectParameter("Correo", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RegistrarCuenta", identificacionParameter, contrasennaParameter, nombreParameter, correoParameter);
-        }
-    
-        public virtual ObjectResult<ConsultarPuestos_Result> ConsultarPuestos()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ConsultarPuestos_Result>("ConsultarPuestos");
-        }
-    
-        public virtual ObjectResult<ConsultarOfertas_Result> ConsultarOfertas()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ConsultarOfertas_Result>("ConsultarOfertas");
         }
     }
 }

@@ -14,6 +14,12 @@ namespace KN_ProyectoClase.BaseDatos
     
     public partial class Usuario
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Usuario()
+        {
+            this.UsuariosOferta = new HashSet<UsuariosOferta>();
+        }
+    
         public long Id { get; set; }
         public string Identificacion { get; set; }
         public string Contrasenna { get; set; }
@@ -23,5 +29,7 @@ namespace KN_ProyectoClase.BaseDatos
         public int IdPerfil { get; set; }
     
         public virtual Perfil Perfil { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UsuariosOferta> UsuariosOferta { get; set; }
     }
 }

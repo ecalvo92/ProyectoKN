@@ -50,7 +50,7 @@ namespace KN_ProyectoClase.Controllers
 
         #endregion
 
-        #region 
+        #region IniciarSesion
 
         [HttpGet]
         public ActionResult IniciarSesion()
@@ -89,8 +89,6 @@ namespace KN_ProyectoClase.Controllers
 
         #endregion
 
-
-
         [HttpGet]
         public ActionResult Inicio()
         {
@@ -109,6 +107,8 @@ namespace KN_ProyectoClase.Controllers
         {
             return View();
         }
+
+        //PENDIENTE EL POST DE RECUPERAR CONTRASEÑA
 
     }
 }

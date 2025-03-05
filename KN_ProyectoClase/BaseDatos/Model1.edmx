@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="KN_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="KN_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Oferta">
           <Key>
             <PropertyRef Name="Id" />
@@ -14,6 +14,7 @@
           <Property Name="Cantidad" Type="int" Nullable="false" />
           <Property Name="Salario" Type="decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="Horario" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Disponible" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Perfil">
           <Key>
@@ -42,6 +43,16 @@
           <Property Name="Estado" Type="bit" Nullable="false" />
           <Property Name="IdPerfil" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="UsuariosOferta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdUsuario" Type="bigint" Nullable="false" />
+          <Property Name="IdOferta" Type="bigint" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
+          <Property Name="Estado" Type="int" Nullable="false" />
+        </EntityType>
         <Association Name="FK_Oferta_Puesto">
           <End Role="Puesto" Type="Self.Puesto" Multiplicity="1" />
           <End Role="Oferta" Type="Self.Oferta" Multiplicity="*" />
@@ -66,6 +77,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UsuariosOferta_Oferta">
+          <End Role="Oferta" Type="Self.Oferta" Multiplicity="1" />
+          <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Oferta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsuariosOferta">
+              <PropertyRef Name="IdOferta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuariosOferta_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsuariosOferta">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="ConsultarOfertas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="ConsultarPuestos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="IniciarSesion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -83,6 +118,7 @@
           <EntitySet Name="Perfil" EntityType="Self.Perfil" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Puesto" EntityType="Self.Puesto" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsuariosOferta" EntityType="Self.UsuariosOferta" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Oferta_Puesto" Association="Self.FK_Oferta_Puesto">
             <End Role="Puesto" EntitySet="Puesto" />
             <End Role="Oferta" EntitySet="Oferta" />
@@ -91,11 +127,33 @@
             <End Role="Perfil" EntitySet="Perfil" />
             <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
+          <AssociationSet Name="FK_UsuariosOferta_Oferta" Association="Self.FK_UsuariosOferta_Oferta">
+            <End Role="Oferta" EntitySet="Oferta" />
+            <End Role="UsuariosOferta" EntitySet="UsuariosOferta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuariosOferta_Usuario" Association="Self.FK_UsuariosOferta_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="UsuariosOferta" EntitySet="UsuariosOferta" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="KN_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Oferta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPuesto" Type="Int64" Nullable="false" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="Salario" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Horario" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Disponible" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Puesto" Relationship="Self.FK_Oferta_Puesto" FromRole="Oferta" ToRole="Puesto" />
+          <NavigationProperty Name="UsuariosOferta" Relationship="Self.FK_UsuariosOferta_Oferta" FromRole="Oferta" ToRole="UsuariosOferta" />
+        </EntityType>
         <EntityType Name="Perfil">
           <Key>
             <PropertyRef Name="Id" />
@@ -111,7 +169,7 @@
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Oferta" Relationship="KN_DBModel.FK_Oferta_Puesto" FromRole="Puesto" ToRole="Oferta" />
+          <NavigationProperty Name="Oferta" Relationship="Self.FK_Oferta_Puesto" FromRole="Puesto" ToRole="Oferta" />
         </EntityType>
         <EntityType Name="Usuario">
           <Key>
@@ -125,7 +183,44 @@
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <Property Name="IdPerfil" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Perfil" Relationship="Self.FK_Usuario_Perfil" FromRole="Usuario" ToRole="Perfil" />
+          <NavigationProperty Name="UsuariosOferta" Relationship="Self.FK_UsuariosOferta_Usuario" FromRole="Usuario" ToRole="UsuariosOferta" />
         </EntityType>
+        <EntityType Name="UsuariosOferta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdUsuario" Type="Int64" Nullable="false" />
+          <Property Name="IdOferta" Type="Int64" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Estado" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Oferta" Relationship="Self.FK_UsuariosOferta_Oferta" FromRole="UsuariosOferta" ToRole="Oferta" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_UsuariosOferta_Usuario" FromRole="UsuariosOferta" ToRole="Usuario" />
+        </EntityType>
+        <Association Name="FK_Oferta_Puesto">
+          <End Role="Puesto" Type="Self.Puesto" Multiplicity="1" />
+          <End Role="Oferta" Type="Self.Oferta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Puesto">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Oferta">
+              <PropertyRef Name="IdPuesto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuariosOferta_Oferta">
+          <End Role="Oferta" Type="Self.Oferta" Multiplicity="1" />
+          <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Oferta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsuariosOferta">
+              <PropertyRef Name="IdOferta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Usuario_Perfil">
           <End Role="Perfil" Type="Self.Perfil" Multiplicity="1" />
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
@@ -138,14 +233,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UsuariosOferta_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsuariosOferta">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="KN_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Oferta" EntityType="Self.Oferta" />
           <EntitySet Name="Perfil" EntityType="Self.Perfil" />
           <EntitySet Name="Puesto" EntityType="Self.Puesto" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <EntitySet Name="UsuariosOferta" EntityType="Self.UsuariosOferta" />
+          <AssociationSet Name="FK_Oferta_Puesto" Association="Self.FK_Oferta_Puesto">
+            <End Role="Puesto" EntitySet="Puesto" />
+            <End Role="Oferta" EntitySet="Oferta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuariosOferta_Oferta" Association="Self.FK_UsuariosOferta_Oferta">
+            <End Role="Oferta" EntitySet="Oferta" />
+            <End Role="UsuariosOferta" EntitySet="UsuariosOferta" />
+          </AssociationSet>
           <AssociationSet Name="FK_Usuario_Perfil" Association="Self.FK_Usuario_Perfil">
             <End Role="Perfil" EntitySet="Perfil" />
             <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
+          <AssociationSet Name="FK_UsuariosOferta_Usuario" Association="Self.FK_UsuariosOferta_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="UsuariosOferta" EntitySet="UsuariosOferta" />
+          </AssociationSet>
+          <FunctionImport Name="ConsultarOfertas" ReturnType="Collection(KN_DBModel.ConsultarOfertas_Result)" />
+          <FunctionImport Name="ConsultarPuestos" ReturnType="Collection(KN_DBModel.ConsultarPuestos_Result)" />
           <FunctionImport Name="IniciarSesion" ReturnType="Collection(KN_DBModel.IniciarSesion_Result)">
             <Parameter Name="Identificacion" Mode="In" Type="String" />
             <Parameter Name="Contrasenna" Mode="In" Type="String" />
@@ -156,14 +279,22 @@
             <Parameter Name="Nombre" Mode="In" Type="String" />
             <Parameter Name="Correo" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="ConsultarPuestos" ReturnType="Collection(KN_DBModel.ConsultarPuestos_Result)" />
-          <EntitySet Name="Oferta" EntityType="KN_DBModel.Oferta" />
-          <AssociationSet Name="FK_Oferta_Puesto" Association="KN_DBModel.FK_Oferta_Puesto">
-            <End Role="Puesto" EntitySet="Puesto" />
-            <End Role="Oferta" EntitySet="Oferta" />
-          </AssociationSet>
-          <FunctionImport Name="ConsultarOfertas" ReturnType="Collection(KN_DBModel.ConsultarOfertas_Result)" />
         </EntityContainer>
+        <ComplexType Name="ConsultarOfertas_Result">
+          <Property Type="Int64" Name="Id" Nullable="false" />
+          <Property Type="Int64" Name="IdPuesto" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Descripcion" Nullable="false" MaxLength="255" />
+          <Property Type="Int32" Name="Cantidad" Nullable="false" />
+          <Property Type="Decimal" Name="Salario" Nullable="false" Precision="10" Scale="2" />
+          <Property Type="String" Name="Horario" Nullable="false" MaxLength="255" />
+          <Property Type="Boolean" Name="Disponible" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="ConsultarPuestos_Result">
+          <Property Type="Int64" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Descripcion" Nullable="false" MaxLength="255" />
+        </ComplexType>
         <ComplexType Name="IniciarSesion_Result">
           <Property Type="Int64" Name="Id" Nullable="false" />
           <Property Type="String" Name="Identificacion" Nullable="false" MaxLength="15" />
@@ -174,49 +305,24 @@
           <Property Type="Int32" Name="IdPerfil" Nullable="false" />
           <Property Type="String" Name="NombrePerfil" Nullable="false" MaxLength="50" />
         </ComplexType>
-        <ComplexType Name="ConsultarPuestos_Result">
-          <Property Type="Int64" Name="Id" Nullable="false" />
-          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Descripcion" Nullable="false" MaxLength="255" />
-        </ComplexType>
-        <EntityType Name="Oferta">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdPuesto" Type="Int64" Nullable="false" />
-          <Property Name="Cantidad" Type="Int32" Nullable="false" />
-          <Property Name="Salario" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
-          <Property Name="Horario" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Puesto" Relationship="KN_DBModel.FK_Oferta_Puesto" FromRole="Oferta" ToRole="Puesto" />
-        </EntityType>
-        <Association Name="FK_Oferta_Puesto">
-          <End Type="KN_DBModel.Puesto" Role="Puesto" Multiplicity="1" />
-          <End Type="KN_DBModel.Oferta" Role="Oferta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Puesto">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Oferta">
-              <PropertyRef Name="IdPuesto" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <ComplexType Name="ConsultarOfertas_Result">
-          <Property Type="Int64" Name="Id" Nullable="false" />
-          <Property Type="Int64" Name="IdPuesto" Nullable="false" />
-          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Descripcion" Nullable="false" MaxLength="255" />
-          <Property Type="Int32" Name="Cantidad" Nullable="false" />
-          <Property Type="Decimal" Name="Salario" Nullable="false" Precision="10" Scale="2" />
-          <Property Type="String" Name="Horario" Nullable="false" MaxLength="255" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="KN_DBModelStoreContainer" CdmEntityContainer="KN_DBEntities">
+          <EntitySetMapping Name="Oferta">
+            <EntityTypeMapping TypeName="KN_DBModel.Oferta">
+              <MappingFragment StoreEntitySet="Oferta">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdPuesto" ColumnName="IdPuesto" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Salario" ColumnName="Salario" />
+                <ScalarProperty Name="Horario" ColumnName="Horario" />
+                <ScalarProperty Name="Disponible" ColumnName="Disponible" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Perfil">
             <EntityTypeMapping TypeName="KN_DBModel.Perfil">
               <MappingFragment StoreEntitySet="Perfil">
@@ -247,6 +353,40 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="UsuariosOferta">
+            <EntityTypeMapping TypeName="KN_DBModel.UsuariosOferta">
+              <MappingFragment StoreEntitySet="UsuariosOferta">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="IdOferta" ColumnName="IdOferta" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ConsultarOfertas" FunctionName="KN_DBModel.Store.ConsultarOfertas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KN_DBModel.ConsultarOfertas_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdPuesto" ColumnName="IdPuesto" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Salario" ColumnName="Salario" />
+                <ScalarProperty Name="Horario" ColumnName="Horario" />
+                <ScalarProperty Name="Disponible" ColumnName="Disponible" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ConsultarPuestos" FunctionName="KN_DBModel.Store.ConsultarPuestos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KN_DBModel.ConsultarPuestos_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="IniciarSesion" FunctionName="KN_DBModel.Store.IniciarSesion">
             <ResultMapping>
               <ComplexTypeMapping TypeName="KN_DBModel.IniciarSesion_Result">
@@ -262,39 +402,6 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="RegistrarCuenta" FunctionName="KN_DBModel.Store.RegistrarCuenta" />
-          <FunctionImportMapping FunctionImportName="ConsultarPuestos" FunctionName="KN_DBModel.Store.ConsultarPuestos">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="KN_DBModel.ConsultarPuestos_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <EntitySetMapping Name="Oferta">
-            <EntityTypeMapping TypeName="KN_DBModel.Oferta">
-              <MappingFragment StoreEntitySet="Oferta">
-                <ScalarProperty Name="Horario" ColumnName="Horario" />
-                <ScalarProperty Name="Salario" ColumnName="Salario" />
-                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
-                <ScalarProperty Name="IdPuesto" ColumnName="IdPuesto" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="ConsultarOfertas" FunctionName="KN_DBModel.Store.ConsultarOfertas">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="KN_DBModel.ConsultarOfertas_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="IdPuesto" ColumnName="IdPuesto" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
-                <ScalarProperty Name="Salario" ColumnName="Salario" />
-                <ScalarProperty Name="Horario" ColumnName="Horario" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

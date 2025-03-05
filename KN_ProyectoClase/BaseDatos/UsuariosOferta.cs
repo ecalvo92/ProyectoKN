@@ -10,16 +10,17 @@
 namespace KN_ProyectoClase.BaseDatos
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class ConsultarOfertas_Result
+    public partial class UsuariosOferta
     {
         public long Id { get; set; }
-        public long IdPuesto { get; set; }
-        public string Nombre { get; set; }
-        public string Descripcion { get; set; }
-        public int Cantidad { get; set; }
-        public decimal Salario { get; set; }
-        public string Horario { get; set; }
-        public bool Disponible { get; set; }
+        public long IdUsuario { get; set; }
+        public long IdOferta { get; set; }
+        public System.DateTime Fecha { get; set; }
+        public int Estado { get; set; }
+    
+        public virtual Oferta Oferta { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

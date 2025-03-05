@@ -164,6 +164,9 @@
     <Compile Include="BaseDatos\Usuario.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="BaseDatos\UsuariosOferta.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\OfertaController.cs" />
     <Compile Include="Controllers\PrincipalController.cs" />
     <Compile Include="Controllers\PuestoController.cs" />
@@ -171,6 +174,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\OfertaModel.cs" />
+    <Compile Include="Models\PuestoModel.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -266,6 +270,7 @@
     <Content Include="Views\Oferta\ConsultarOfertas.cshtml" />
     <Content Include="Views\Oferta\ConsultarOfertasDisponibles.cshtml" />
     <Content Include="Views\Oferta\AgregarOferta.cshtml" />
+    <Content Include="Views\Puesto\AgregarPuesto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
