@@ -47,5 +47,38 @@ namespace KN_ProyectoClase.Controllers
                 }
             }
         }
+
+        [HttpGet]
+        public ActionResult ActualizarPuesto(long q)
+        {
+            using (var context = new KN_DBEntities())
+            {
+                var info = context.Puesto.Where(x => x.Id == q).FirstOrDefault();
+                return View(info);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ActualizarPuesto(Puesto model)
+        {
+            using (var context = new KN_DBEntities())
+            {
+                var info = context.Puesto.Where(x => x.Id == model.Id).FirstOrDefault();
+
+                info.Nombre = model.Nombre;
+                info.Descripcion = model.Descripcion;
+                var result = context.SaveChanges();
+
+                if (result > 0)
+                    return RedirectToAction("ConsultarPuestos", "Puesto");
+                else
+                {
+                    ViewBag.Mensaje = "La información no se ha podido actualizar correctamente";
+                    return View();
+                }
+
+            }
+        }
+
     }
 }

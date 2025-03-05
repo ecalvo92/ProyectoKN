@@ -1,0 +1,40 @@
+﻿@model KN_ProyectoClase.BaseDatos.Puesto
+
+@{
+    ViewBag.Title = "AgregarPuesto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-3 col-md-2"></div>
+    <div class="col-lg-6 col-md-8">
+
+        <div class="text-center">
+            <h1 class="h4 text-gray-900 mb-4">Actualizar Puesto</h1>
+        </div>
+
+        @if (ViewBag.Mensaje != null)
+        {
+            <div class="alert alert-warning msjCentrado">
+                @ViewBag.Mensaje
+            </div>
+        }
+
+        @using (Html.BeginForm("ActualizarPuesto", "Puesto"))
+        {
+            @Html.HiddenFor(x => x.Id, new { @class = "form-control form-control-user", @placeholder = "Id", @Required = "true" })
+
+            <div class="form-group">
+                @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control form-control-user", @placeholder = "Nombre", @Required = "true" })
+            </div>
+            <div class="form-group">
+                @Html.TextAreaFor(x => x.Descripcion, new { @class = "form-control form-control-user", @placeholder = "Descripción", @Required = "true", @rows = 10, @maxLength = "255" })
+            </div>
+
+            <div style="text-align: right; width: 200px">
+                <input type="submit" class="btn btn-danger btn-user btn-block" value="Procesar">
+            </div>
+        }
+
+    </div>
+</div>

@@ -271,6 +271,8 @@
     <Content Include="Views\Oferta\ConsultarOfertasDisponibles.cshtml" />
     <Content Include="Views\Oferta\AgregarOferta.cshtml" />
     <Content Include="Views\Puesto\AgregarPuesto.cshtml" />
+    <Content Include="Views\Puesto\ActualizarPuesto.cshtml" />
+    <Content Include="Views\Oferta\ActualizarOferta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

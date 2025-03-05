@@ -13,6 +13,7 @@ CREATE TABLE [dbo].[Oferta](
 	[Cantidad] [int] NOT NULL,
 	[Salario] [decimal](10, 2) NOT NULL,
 	[Horario] [varchar](255) NOT NULL,
+	[Disponible] [bit] NOT NULL,
  CONSTRAINT [PK_Oferta] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -56,9 +57,32 @@ CREATE TABLE [dbo].[Usuario](
 ) ON [PRIMARY]
 GO
 
+CREATE TABLE [dbo].[UsuariosOferta](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[IdUsuario] [bigint] NOT NULL,
+	[IdOferta] [bigint] NOT NULL,
+	[Fecha] [datetime] NOT NULL,
+	[Estado] [int] NOT NULL,
+ CONSTRAINT [PK_UsuariosOferta] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
 SET IDENTITY_INSERT [dbo].[Oferta] ON 
 GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario]) VALUES (1, 1, 3, CAST(1500.00 AS Decimal(10, 2)), N'Lunes a Viernes de 8:00 a 17:00')
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (1, 1, 3, CAST(1500.00 AS Decimal(10, 2)), N'Lunes a Viernes de 8:00 a 17:00', 1)
+GO
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (2, 2, 3, CAST(1800.00 AS Decimal(10, 2)), N'Lunes a Domingo de 08:00 a 18:00', 0)
+GO
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (3, 4, 5, CAST(2000.00 AS Decimal(10, 2)), N'Lunes, Miércoles y Viernes de 8:00 am - 6:00 pm / presencial ', 1)
+GO
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (4, 1, 2, CAST(2121.00 AS Decimal(10, 2)), N'21321321', 1)
+GO
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (5, 4, 1, CAST(5000.00 AS Decimal(10, 2)), N'Lunes a Viernes', 1)
+GO
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (6, 6, 10, CAST(100.00 AS Decimal(10, 2)), N'LV', 0)
 GO
 SET IDENTITY_INSERT [dbo].[Oferta] OFF
 GO
@@ -79,6 +103,17 @@ GO
 INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (2, N'Asistente de Base de Datos', N'Tareas principalles de base de datos')
 GO
 INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (3, N'Asistente de Base de Datos', N'Tareas principalles de base de datos')
+GO
+INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (4, N'QA Senior', N'Encargado de realizar pruebas de los sistemas.
+Encargado de documentar las pruebas.
+Encargado de automatizar escenarios.
+Supervisar el trabajo del equipo.')
+GO
+INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (5, N'Encargado de Mercadeo', N'Se encargará de las funcionalidades más importantes de mercadeo')
+GO
+INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (6, N'Encargado de RH', N'Procesos de reclutamiento y selección')
+GO
+INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (7, N'b', N'bc')
 GO
 SET IDENTITY_INSERT [dbo].[Puesto] OFF
 GO
@@ -116,6 +151,18 @@ GO
 ALTER TABLE [dbo].[Usuario] CHECK CONSTRAINT [FK_Usuario_Perfil]
 GO
 
+ALTER TABLE [dbo].[UsuariosOferta]  WITH CHECK ADD  CONSTRAINT [FK_UsuariosOferta_Oferta] FOREIGN KEY([IdOferta])
+REFERENCES [dbo].[Oferta] ([Id])
+GO
+ALTER TABLE [dbo].[UsuariosOferta] CHECK CONSTRAINT [FK_UsuariosOferta_Oferta]
+GO
+
+ALTER TABLE [dbo].[UsuariosOferta]  WITH CHECK ADD  CONSTRAINT [FK_UsuariosOferta_Usuario] FOREIGN KEY([IdUsuario])
+REFERENCES [dbo].[Usuario] ([Id])
+GO
+ALTER TABLE [dbo].[UsuariosOferta] CHECK CONSTRAINT [FK_UsuariosOferta_Usuario]
+GO
+
 CREATE PROCEDURE [dbo].[ConsultarOfertas]
 
 AS
@@ -127,7 +174,8 @@ BEGIN
 			P.Descripcion,
 			Cantidad,
 			Salario,
-			Horario
+			Horario,
+			Disponible
 	  FROM	dbo.Oferta O
 	  INNER JOIN dbo.Puesto P ON O.IdPuesto = P.Id
 

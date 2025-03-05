@@ -22,6 +22,7 @@
                     <th>#</th>
                     <th>Nombre</th>
                     <th>Descripción</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,6 +33,7 @@
                         <td>@item.Id</td>
                         <td>@item.Nombre</td>
                         <td>@item.Descripcion</td>
+                        <td><a href="@Url.Action("ActualizarPuesto","Puesto", new { q = item.Id })"><i class="fa fa-edit"></i></a></td>
                     </tr>
                 }
 

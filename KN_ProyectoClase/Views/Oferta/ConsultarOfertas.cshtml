@@ -42,7 +42,7 @@
                         <td>$ @item.Salario.ToString("N2")</td>
                         <td>@item.Horario</td>
                         <td>@disponible</td>
-                        <td><input type="button" class="btn btn-outline-primary" value="Editar" /></td>
+                        <td><a href="@Url.Action("ActualizarOferta","Oferta", new { q = item.Id })"><i class="fa fa-edit"></i></a></td>
                     </tr>
                 }
 
