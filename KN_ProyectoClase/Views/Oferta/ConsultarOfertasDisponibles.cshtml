@@ -7,51 +7,59 @@
 
 <div class="container-fluid">
 
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Ofertas Disponibles</h6>
-        </div>
-        <table class="table table-bordered table-hover">
-            <thead>
+    <h5 class="m-0 font-weight-bold text-primary">Ofertas Disponibles</h5>
+
+    <br />
+
+    <table id="example" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Salario</th>
+                <th>Horario</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                var disponible = item.Disponible ? "Activo" : "Inactivo";
+
                 <tr>
-                    <th>#</th>
-                    <th>Nombre</th>
-                    <th>Cantidad</th>
-                    <th>Salario</th>
-                    <th>Horario</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
+                    <td>@item.Id</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Cantidad</td>
+                    <td>$ @item.Salario.ToString("N2")</td>
+                    <td>@item.Horario</td>
+                    <td>@disponible</td>
+                    <td><input type="button" class="btn btn-outline-primary" value="Ver Detalle" /></td>
+
                 </tr>
-            </thead>
-            <tbody>
+            }
 
-                @foreach (var item in Model)
-                {
-                    var disponible = item.Disponible ? "Activo" : "Inactivo";
-
-                    <tr>
-                        <td>@item.Id</td>
-                        <td>@item.Nombre</td>
-                        <td>@item.Cantidad</td>
-                        <td>$ @item.Salario.ToString("N2")</td>
-                        <td>@item.Horario</td>
-                        <td>@disponible</td>
-
-                        @if (Session["IdPerfilUsuario"] != null)
-                        {
-                            <td><input type="button" class="btn btn-outline-primary" value="Ver Detalle" /></td>
-                        }
-                        else
-                        {
-                            <td><input type="button" class="btn btn-outline-primary" value="Ver Detalle" style="cursor:not-allowed" /></td>
-                        }
-
-                    </tr>
-                }
-
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
 
 </div>
 
+<script src="~/Template/js/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        var table = new DataTable('#example', {
+            language: {
+                url: '//cdn.datatables.net/plug-ins/2.2.2/i18n/es-ES.json',
+            },
+            columnDefs: [
+                { "className": "dt-left", "targets": "_all" }
+            ]
+        });
+
+    });
+
+</script>

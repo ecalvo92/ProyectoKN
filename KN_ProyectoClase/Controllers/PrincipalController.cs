@@ -1,51 +1,67 @@
 ﻿using KN_ProyectoClase.BaseDatos;
 using KN_ProyectoClase.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace KN_ProyectoClase.Controllers
 {
     public class PrincipalController : Controller
     {
+        RegistroErrores error = new RegistroErrores();
+
         #region RegistrarCuenta
-        
+
         [HttpGet]
         public ActionResult RegistrarCuenta()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                error.RegistrarError(ex.Message, "Get RegistrarCuenta");
+                return View("Error");                
+            }           
         }
 
         [HttpPost]
         public ActionResult RegistrarCuenta(UsuarioModel model)
         {
-            //EF utilizando LinQ
-            using (var context = new KN_DBEntities())
+            try
             {
-                //Usuario tabla = new Usuario();
-                //tabla.Identificacion = model.Identificacion;
-                //tabla.Contrasenna = model.Contrasenna;
-                //tabla.Nombre = model.Nombre;
-                //tabla.Correo = model.Correo;
-                //tabla.Estado = true;
-                //tabla.IdPerfil = 2;
-
-                //context.Usuario.Add(tabla);
-                //var result = context.SaveChanges();
-
-                //EF utilizando Procedimientos Almacenados
-                var result = context.RegistrarCuenta(model.Identificacion, model.Contrasenna, model.Nombre, model.Correo);
-
-                if (result > 0)
-                    return RedirectToAction("IniciarSesion", "Principal");
-                else
+                //EF utilizando LinQ
+                using (var context = new KN_DBEntities())
                 {
-                    ViewBag.Mensaje = "Su información no se ha podido registrar correctamente";
-                    return View();
+                    //Usuario tabla = new Usuario();
+                    //tabla.Identificacion = model.Identificacion;
+                    //tabla.Contrasenna = model.Contrasenna;
+                    //tabla.Nombre = model.Nombre;
+                    //tabla.Correo = model.Correo;
+                    //tabla.Estado = true;
+                    //tabla.IdPerfil = 2;
+
+                    //context.Usuario.Add(tabla);
+                    //var result = context.SaveChanges();
+
+                    //EF utilizando Procedimientos Almacenados
+                    var result = context.RegistrarCuenta(model.Identificacion, model.Contrasenna, model.Nombre, model.Correo);
+
+                    if (result > 0)
+                        return RedirectToAction("IniciarSesion", "Principal");
+                    else
+                    {
+                        ViewBag.Mensaje = "Su información no se ha podido registrar correctamente";
+                        return View();
+                    }
                 }
-            }            
+            }
+            catch (Exception ex)
+            {
+                error.RegistrarError(ex.Message, "Post RegistrarCuenta");
+                return View("Error");
+            }
         }
 
         #endregion
@@ -55,35 +71,52 @@ namespace KN_ProyectoClase.Controllers
         [HttpGet]
         public ActionResult IniciarSesion()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                error.RegistrarError(ex.Message, "Get IniciarSesion");
+                return View("Error");
+            }
         }
 
         [HttpPost]
         public ActionResult IniciarSesion(UsuarioModel model)
         {
-            using (var context = new KN_DBEntities())
+            try
             {
-                //EF utilizando LinQ
-                //var info = context.Usuario.
-                //Where(x => x.Identificacion == model.Identificacion
-                //&& x.Contrasenna == model.Contrasenna
-                //&& x.Estado == true).FirstOrDefault();
-
-                //EF utilizando Procedimientos Almacenados
-                var info = context.IniciarSesion(model.Identificacion, model.Contrasenna).FirstOrDefault();
-
-                if (info != null)
+                using (var context = new KN_DBEntities())
                 {
-                    Session["NombreUsuario"] = info.NombreUsuario;
-                    Session["NombrePerfilUsuario"] = info.NombrePerfil;
-                    Session["IdPerfilUsuario"] = info.IdPerfil;
-                    return RedirectToAction("Inicio", "Principal");
+                    //EF utilizando LinQ
+                    //var info = context.Usuario.
+                    //Where(x => x.Identificacion == model.Identificacion
+                    //&& x.Contrasenna == model.Contrasenna
+                    //&& x.Estado == true).FirstOrDefault();
+
+                    //EF utilizando Procedimientos Almacenados
+                    var info = context.IniciarSesion(model.Identificacion, model.Contrasenna).FirstOrDefault();
+
+                    if (info != null)
+                    {
+                        Session["IdUsuario"] = info.Id;
+                        Session["NombreUsuario"] = info.NombreUsuario;
+                        Session["NombrePerfilUsuario"] = info.NombrePerfil;
+                        Session["IdPerfilUsuario"] = info.IdPerfil;
+                        return RedirectToAction("Inicio", "Principal");
+                    }
+                    else
+                    {
+                        ViewBag.Mensaje = "Su información no se ha podido validar correctamente";
+                        return View();
+                    }
                 }
-                else
-                {
-                    ViewBag.Mensaje = "Su información no se ha podido validar correctamente";
-                    return View();
-                }
+            }
+            catch (Exception ex)
+            {
+                error.RegistrarError(ex.Message, "Post IniciarSesion");
+                return View("Error");
             }
         }
 
@@ -92,20 +125,44 @@ namespace KN_ProyectoClase.Controllers
         [HttpGet]
         public ActionResult Inicio()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                error.RegistrarError(ex.Message, "Get Inicio");
+                return View("Error");
+            }
         }
 
         [HttpGet]
         public ActionResult CerrarSesion()
         {
-            Session.Clear();
-            return RedirectToAction("Inicio", "Principal");
+            try
+            {
+                Session.Clear();
+                return RedirectToAction("Inicio", "Principal");
+            }
+            catch (Exception ex)
+            {
+                error.RegistrarError(ex.Message, "Get CerrarSesion");
+                return View("Error");
+            }
         }
 
         [HttpGet]
         public ActionResult RecuperarContrasenna()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                error.RegistrarError(ex.Message, "Get RecuperarContrasenna");
+                return View("Error");
+            }
         }
 
         //PENDIENTE EL POST DE RECUPERAR CONTRASEÑA
