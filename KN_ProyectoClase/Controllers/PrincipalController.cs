@@ -1,7 +1,11 @@
 ﻿using KN_ProyectoClase.BaseDatos;
 using KN_ProyectoClase.Models;
 using System;
+using System.Configuration;
 using System.Linq;
+using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web.Mvc;
 
 namespace KN_ProyectoClase.Controllers
@@ -122,6 +126,58 @@ namespace KN_ProyectoClase.Controllers
 
         #endregion
 
+        #region RecuperarContrasenna
+
+        [HttpGet]
+        public ActionResult RecuperarContrasenna()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                error.RegistrarError(ex.Message, "Get RecuperarContrasenna");
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult RecuperarContrasenna(UsuarioModel model)
+        {
+            try
+            {
+                using (var context = new KN_DBEntities())
+                {
+                    var info = context.Usuario.Where(x => x.Correo == model.Correo
+                                                       && x.Estado == true).FirstOrDefault();
+
+                    if (info != null)
+                    {
+                        var codigoTemporal = CrearCodigo();
+
+                        info.Contrasenna = codigoTemporal;
+                        context.SaveChanges();
+
+                        var notificacion = EnviarCorreo(info, codigoTemporal, "Acceso al sistema KN");
+                    
+                        if(notificacion)
+                            return RedirectToAction("IniciarSesion", "Principal");
+                    }
+
+                    ViewBag.Mensaje = "Su acceso no se ha podido reestablecer correctamente";
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                error.RegistrarError(ex.Message, "Post RecuperarContrasenna");
+                return View("Error");
+            }
+        }
+
+        #endregion
+
         [HttpGet]
         public ActionResult Inicio()
         {
@@ -151,21 +207,37 @@ namespace KN_ProyectoClase.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult RecuperarContrasenna()
+        private string CrearCodigo()
         {
-            try
+            int length = 5;
+            const string valid = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            StringBuilder res = new StringBuilder();
+            Random rnd = new Random();
+            while (0 < length--)
             {
-                return View();
+                res.Append(valid[rnd.Next(valid.Length)]);
             }
-            catch (Exception ex)
-            {
-                error.RegistrarError(ex.Message, "Get RecuperarContrasenna");
-                return View("Error");
-            }
+            return res.ToString();
         }
 
-        //PENDIENTE EL POST DE RECUPERAR CONTRASEÑA
+        private bool EnviarCorreo(Usuario info, string codigo, string titulo)
+        {
+            string cuenta = ConfigurationManager.AppSettings["CorreoNotificaciones"].ToString();
+            string contrasenna = ConfigurationManager.AppSettings["ContrasennaNotificaciones"].ToString();
 
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress(cuenta);
+            message.To.Add(new MailAddress(info.Correo));
+            message.Subject = titulo;
+            message.Body = $"Hola {info.Nombre}, por favor utilice el siguiente código para ingresar al sistema: {codigo}";
+            message.Priority = MailPriority.Normal;
+            message.IsBodyHtml = true;
+
+            SmtpClient client = new SmtpClient("smtp.office365.com", 587);
+            client.Credentials = new System.Net.NetworkCredential(cuenta, contrasenna);
+            client.EnableSsl = true;
+            client.Send(message);
+            return true;
+        }
     }
 }

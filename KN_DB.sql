@@ -7,6 +7,19 @@ GO
 USE [KN_DB]
 GO
 
+CREATE TABLE [dbo].[Error](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[IdUsuario] [bigint] NOT NULL,
+	[Mensaje] [varchar](max) NOT NULL,
+	[FechaHora] [datetime] NOT NULL,
+	[Origen] [varchar](500) NOT NULL,
+ CONSTRAINT [PK_Error] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
 CREATE TABLE [dbo].[Oferta](
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,
 	[IdPuesto] [bigint] NOT NULL,
@@ -70,19 +83,28 @@ CREATE TABLE [dbo].[UsuariosOferta](
 ) ON [PRIMARY]
 GO
 
+SET IDENTITY_INSERT [dbo].[Error] ON 
+GO
+INSERT [dbo].[Error] ([Id], [IdUsuario], [Mensaje], [FechaHora], [Origen]) VALUES (1, 0, N'Referencia a objeto no establecida como instancia de un objeto.', CAST(N'2025-03-11T20:16:18.503' AS DateTime), N'Get ConsultarOfertasDisponibles')
+GO
+INSERT [dbo].[Error] ([Id], [IdUsuario], [Mensaje], [FechaHora], [Origen]) VALUES (2, 4, N'Referencia a objeto no establecida como instancia de un objeto.', CAST(N'2025-03-11T20:18:45.107' AS DateTime), N'Get ConsultarOfertasDisponibles')
+GO
+SET IDENTITY_INSERT [dbo].[Error] OFF
+GO
+
 SET IDENTITY_INSERT [dbo].[Oferta] ON 
 GO
 INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (1, 1, 3, CAST(1500.00 AS Decimal(10, 2)), N'Lunes a Viernes de 8:00 a 17:00', 1)
 GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (2, 2, 3, CAST(1800.00 AS Decimal(10, 2)), N'Lunes a Domingo de 08:00 a 18:00', 0)
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (2, 2, 3, CAST(1800.00 AS Decimal(10, 2)), N'Lunes a Domingo de 08:00 a 18:00', 1)
 GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (3, 4, 5, CAST(2000.00 AS Decimal(10, 2)), N'Lunes, Miércoles y Viernes de 8:00 am - 6:00 pm / presencial ', 1)
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (3, 4, 5, CAST(2000.00 AS Decimal(10, 2)), N'Lunes, Miércoles y Viernes de 8:00 am - 6:00 pm / presencial ', 0)
 GO
 INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (4, 1, 2, CAST(2121.00 AS Decimal(10, 2)), N'21321321', 1)
 GO
 INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (5, 4, 1, CAST(5000.00 AS Decimal(10, 2)), N'Lunes a Viernes', 1)
 GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (6, 6, 10, CAST(100.00 AS Decimal(10, 2)), N'LV', 0)
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (6, 6, 10, CAST(100.00 AS Decimal(10, 2)), N'LV', 1)
 GO
 SET IDENTITY_INSERT [dbo].[Oferta] OFF
 GO
@@ -122,7 +144,7 @@ SET IDENTITY_INSERT [dbo].[Usuario] ON
 GO
 INSERT [dbo].[Usuario] ([Id], [Identificacion], [Contrasenna], [Nombre], [Correo], [Estado], [IdPerfil]) VALUES (4, N'304590415', N'90415', N'Eduardo Calvo Castillo', N'ecalvo90415@ufide.ac.cr', 1, 2)
 GO
-INSERT [dbo].[Usuario] ([Id], [Identificacion], [Contrasenna], [Nombre], [Correo], [Estado], [IdPerfil]) VALUES (6, N'305440468', N'40468', N'Fabricio Arce Salas', N'farce40468@ufide.ac.cr', 1, 1)
+INSERT [dbo].[Usuario] ([Id], [Identificacion], [Contrasenna], [Nombre], [Correo], [Estado], [IdPerfil]) VALUES (6, N'305440468', N'S63P4', N'Fabricio Arce Salas', N'farce40468@ufide.ac.cr', 1, 1)
 GO
 SET IDENTITY_INSERT [dbo].[Usuario] OFF
 GO
@@ -234,6 +256,19 @@ BEGIN
 		VALUES (@Identificacion,@Contrasenna,@Nombre,@Correo,1,2)
 
 	END
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[RegistrarError]
+	@IdUsuario bigint,
+	@Mensaje   varchar(max),
+	@Origen	   varchar(500)
+AS
+BEGIN
+	
+	INSERT INTO dbo.Error (IdUsuario,Mensaje,FechaHora,Origen)
+    VALUES (@IdUsuario, @Mensaje, GETDATE(), @Origen)
 
 END
 GO

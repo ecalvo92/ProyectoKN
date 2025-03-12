@@ -12,7 +12,7 @@ namespace KN_ProyectoClase.Models
         {
             using (var context = new KN_DBEntities())
             {
-                var IdUsuario = HttpContext.Current.Session["IdUsuario"].ToString() ?? "0";
+                var IdUsuario = (HttpContext.Current.Session["IdUsuario"] != null ? HttpContext.Current.Session["IdUsuario"].ToString() : "0");
 
                 context.RegistrarError(long.Parse(IdUsuario), Mensaje, Origen);
             }
