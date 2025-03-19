@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Proyecto KN</title>
+    <title>Sistema Web KN</title>
 
     <link href="~/Template/css/all.min.css" rel="stylesheet" />
     <link href="~/Template/css/sb-admin-2.css" rel="stylesheet" />
@@ -19,7 +19,7 @@
 
 </head>
 
-@{ 
+@{
     var nombreUsuario = "Invitad@";
 
     if (Session["NombreUsuario"] != null)
@@ -32,48 +32,51 @@
 
     <div id="wrapper">
 
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        @if (Session["IdPerfilUsuario"] != null)
+        {
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                <div class="sidebar-brand-text mx-3">Proyecto KN</div>
-            </a>
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="@Url.Action("Inicio","Principal")">
+                    <div class="sidebar-brand-text mx-3">Proyecto KN</div>
+                </a>
 
-            <hr class="sidebar-divider my-0">
+                <hr class="sidebar-divider my-0">
 
-            @if (Session["IdPerfilUsuario"] != null && Session["IdPerfilUsuario"].ToString() == "1")
-            {
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("ConsultarPuestos", "Puesto")">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Mant. Puestos</span>
-                    </a>
-                </li>
+                @if (Session["IdPerfilUsuario"] != null && Session["IdPerfilUsuario"].ToString() == "1")
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ConsultarPuestos", "Puesto")">
+                            <i class="fas fa-fw fa-chart-area"></i>
+                            <span>Mant. Puestos</span>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("ConsultarOfertas", "Oferta")">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Mant. Ofertas</span>
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("ConsultarOfertasDisponibles", "Oferta")">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Ver Ofertas</span>
-                    </a>
-                </li>
-            }
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ConsultarOfertas", "Oferta")">
+                            <i class="fas fa-fw fa-chart-area"></i>
+                            <span>Mant. Ofertas</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ConsultarOfertasDisponibles", "Oferta")">
+                            <i class="fas fa-fw fa-chart-area"></i>
+                            <span>Ver Ofertas</span>
+                        </a>
+                    </li>
+                }
 
 
-            <hr class="sidebar-divider d-none d-md-block">
+                <hr class="sidebar-divider d-none d-md-block">
 
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
 
-        </ul>
+            </ul>
+        }
 
         <div id="content-wrapper" class="d-flex flex-column">
 
@@ -88,6 +91,10 @@
                     @if (Session["IdPerfilUsuario"] != null)
                     {
                         @("Perfil: " + Session["NombrePerfilUsuario"].ToString())
+                    }
+                    else
+                    {
+                        <div>Sistema Web KN</div>
                     }
 
                     <ul class="navbar-nav ml-auto">
@@ -105,22 +112,22 @@
 
                                 @if (Session["IdPerfilUsuario"] == null)
                                 {
-                                    <a class="dropdown-item" href="@Url.Action("IniciarSesion","Principal")">
+                                    <a class="dropdown-item" href="@Url.Action("IniciarSesion", "Principal")">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Iniciar Sesión
                                     </a>
                                 }
                                 else
                                 {
-                                    <a class="dropdown-item" href="@Url.Action("ActualizarDatos","Usuario")">
+                                    <a class="dropdown-item" href="@Url.Action("ActualizarDatos", "Usuario")">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Actualizar Datos
                                     </a>
-                                    <a class="dropdown-item" href="@Url.Action("CambiarAcceso","Usuario")">
+                                    <a class="dropdown-item" href="@Url.Action("CambiarAcceso", "Usuario")">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Cambiar Contraseña
                                     </a>
-                                    <a class="dropdown-item" href="@Url.Action("CerrarSesion","Principal")">
+                                    <a class="dropdown-item" href="@Url.Action("CerrarSesion", "Principal")">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Cerrar Sesión
                                     </a>
@@ -132,6 +139,7 @@
                     </ul>
 
                 </nav>
+
                 <div class="container-fluid">
                     <br />
                     @RenderBody()
@@ -154,25 +162,6 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script src="~/Template/js/jquery.min.js"></script>
     <script src="~/Template/js/bootstrap.bundle.min.js"></script>

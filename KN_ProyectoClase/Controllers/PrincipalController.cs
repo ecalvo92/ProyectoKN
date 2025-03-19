@@ -185,7 +185,12 @@ namespace KN_ProyectoClase.Controllers
         {
             try
             {
-                return View();
+                using (var context = new KN_DBEntities())
+                {
+                    //Si no me he logueado traiga el top 10 mejores
+                    var info = context.ConsultarOfertas().Where(x => x.Disponible == true).ToList();
+                    return View(info);
+                }
             }
             catch (Exception ex)
             {

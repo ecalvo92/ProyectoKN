@@ -98,11 +98,35 @@ namespace KN_ProyectoClase.Controllers
         {
             try
             {
-                return View();
+                using (var context = new KN_DBEntities())
+                {
+                    long idSesion = long.Parse(Session["IdUsuario"].ToString());
+                    var info = context.Usuario.Where(x => x.Id == idSesion).FirstOrDefault();
+
+                    var infoCorreo = context.Usuario.Where(x => x.Correo == model.Correo 
+                                                             && x.Id != idSesion).FirstOrDefault();
+
+                    if (infoCorreo == null)
+                    {
+                        info.Identificacion = model.Identificacion;
+                        info.Nombre = model.Nombre;
+                        info.Correo = model.Correo;
+                        var result = context.SaveChanges();
+
+                        if (result > 0)
+                        {
+                            Session["NombreUsuario"] = model.Nombre;
+                            return RedirectToAction("Inicio", "Principal");
+                        }
+                    }
+
+                    ViewBag.Mensaje = "Su información no se ha podido actualizar correctamente";
+                    return View();
+                }
             }
             catch (Exception ex)
             {
-                error.RegistrarError(ex.Message, "Get ActualizarDatos");
+                error.RegistrarError(ex.Message, "Post ActualizarDatos");
                 return View("Error");
             }
         }
