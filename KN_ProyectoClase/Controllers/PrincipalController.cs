@@ -13,6 +13,7 @@ namespace KN_ProyectoClase.Controllers
     public class PrincipalController : Controller
     {
         RegistroErrores error = new RegistroErrores();
+        Utilitarios util = new Utilitarios();
 
         #region RegistrarCuenta
 
@@ -159,7 +160,8 @@ namespace KN_ProyectoClase.Controllers
                         info.Contrasenna = codigoTemporal;
                         context.SaveChanges();
 
-                        var notificacion = EnviarCorreo(info, codigoTemporal, "Acceso al sistema KN");
+                        string mensaje = $"Hola {info.Nombre}, por favor utilice el siguiente código para ingresar al sistema: {codigoTemporal}";
+                        var notificacion = util.EnviarCorreo(info, mensaje, "Acceso al sistema KN");
                     
                         if(notificacion)
                             return RedirectToAction("IniciarSesion", "Principal");
@@ -220,24 +222,5 @@ namespace KN_ProyectoClase.Controllers
             return res.ToString();
         }
 
-        private bool EnviarCorreo(Usuario info, string codigo, string titulo)
-        {
-            string cuenta = ConfigurationManager.AppSettings["CorreoNotificaciones"].ToString();
-            string contrasenna = ConfigurationManager.AppSettings["ContrasennaNotificaciones"].ToString();
-
-            MailMessage message = new MailMessage();
-            message.From = new MailAddress(cuenta);
-            message.To.Add(new MailAddress(info.Correo));
-            message.Subject = titulo;
-            message.Body = $"Hola {info.Nombre}, por favor utilice el siguiente código para ingresar al sistema: {codigo}";
-            message.Priority = MailPriority.Normal;
-            message.IsBodyHtml = true;
-
-            SmtpClient client = new SmtpClient("smtp.office365.com", 587);
-            client.Credentials = new System.Net.NetworkCredential(cuenta, contrasenna);
-            client.EnableSsl = true;
-            client.Send(message);
-            return true;
-        }
     }
 }

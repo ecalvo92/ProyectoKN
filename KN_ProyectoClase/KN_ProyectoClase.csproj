@@ -173,6 +173,7 @@
     <Compile Include="Controllers\OfertaController.cs" />
     <Compile Include="Controllers\PrincipalController.cs" />
     <Compile Include="Controllers\PuestoController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -180,6 +181,7 @@
     <Compile Include="Models\PuestoModel.cs" />
     <Compile Include="Models\RegistroErrores.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
+    <Compile Include="Models\Utilitarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +279,8 @@
     <Content Include="Views\Puesto\AgregarPuesto.cshtml" />
     <Content Include="Views\Puesto\ActualizarPuesto.cshtml" />
     <Content Include="Views\Oferta\ActualizarOferta.cshtml" />
+    <Content Include="Views\Usuario\CambiarAcceso.cshtml" />
+    <Content Include="Views\Usuario\ActualizarDatos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
