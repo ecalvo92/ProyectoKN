@@ -57,6 +57,13 @@
                             <span>Mant. Ofertas</span>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ConsultarOfertas", "Oferta")">
+                            <i class="fas fa-fw fa-chart-area"></i>
+                            <span>Seg. Ofertas</span>
+                        </a>
+                    </li>
                 }
                 else
                 {
@@ -64,6 +71,13 @@
                         <a class="nav-link" href="@Url.Action("ConsultarOfertasDisponibles", "Oferta")">
                             <i class="fas fa-fw fa-chart-area"></i>
                             <span>Ver Ofertas</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ConsultarOfertasDisponibles", "Oferta")">
+                            <i class="fas fa-fw fa-chart-area"></i>
+                            <span>Ver Ofertas Aplicadas</span>
                         </a>
                     </li>
                 }

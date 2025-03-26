@@ -27,11 +27,12 @@ CREATE TABLE [dbo].[Oferta](
 	[Salario] [decimal](10, 2) NOT NULL,
 	[Horario] [varchar](255) NOT NULL,
 	[Disponible] [bit] NOT NULL,
+	[Imagen] [varchar](max) NULL,
  CONSTRAINT [PK_Oferta] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
 CREATE TABLE [dbo].[Perfil](
@@ -85,44 +86,18 @@ GO
 
 SET IDENTITY_INSERT [dbo].[Error] ON 
 GO
-INSERT [dbo].[Error] ([Id], [IdUsuario], [Mensaje], [FechaHora], [Origen]) VALUES (1, 0, N'Referencia a objeto no establecida como instancia de un objeto.', CAST(N'2025-03-11T20:16:18.503' AS DateTime), N'Get ConsultarOfertasDisponibles')
-GO
-INSERT [dbo].[Error] ([Id], [IdUsuario], [Mensaje], [FechaHora], [Origen]) VALUES (2, 4, N'Referencia a objeto no establecida como instancia de un objeto.', CAST(N'2025-03-11T20:18:45.107' AS DateTime), N'Get ConsultarOfertasDisponibles')
-GO
-INSERT [dbo].[Error] ([Id], [IdUsuario], [Mensaje], [FechaHora], [Origen]) VALUES (3, 4, N'El servidor SMTP requiere una conexión segura o el cliente no se autenticó. La respuesta del servidor fue: 5.7.57 Client not authenticated to send mail. Error: 535 5.7.139 Authentication unsuccessful, the user credentials were incorrect. [MN2PR20CA0042.namprd20.prod.outlook.com 2025-03-19T00:51:15.923Z 08DD65FF71A8849D]', CAST(N'2025-03-18T18:51:15.090' AS DateTime), N'Post CambiarAcceso')
-GO
-INSERT [dbo].[Error] ([Id], [IdUsuario], [Mensaje], [FechaHora], [Origen]) VALUES (4, 4, N'El servidor SMTP requiere una conexión segura o el cliente no se autenticó. La respuesta del servidor fue: 5.7.57 Client not authenticated to send mail. Error: 535 5.7.139 Authentication unsuccessful, the user credentials were incorrect. [BN0PR04CA0140.namprd04.prod.outlook.com 2025-03-19T01:02:36.002Z 08DD66547A18E398]', CAST(N'2025-03-18T19:02:35.163' AS DateTime), N'Post CambiarAcceso')
-GO
-INSERT [dbo].[Error] ([Id], [IdUsuario], [Mensaje], [FechaHora], [Origen]) VALUES (5, 0, N'El servidor SMTP requiere una conexión segura o el cliente no se autenticó. La respuesta del servidor fue: 5.7.57 Client not authenticated to send mail. Error: 535 5.7.139 Authentication unsuccessful, the user credentials were incorrect. [MN2PR11CA0029.namprd11.prod.outlook.com 2025-03-19T01:04:48.715Z 08DD661C069EBEC7]', CAST(N'2025-03-18T19:04:47.840' AS DateTime), N'Post RecuperarContrasenna')
+INSERT [dbo].[Error] ([Id], [IdUsuario], [Mensaje], [FechaHora], [Origen]) VALUES (6, 6, N'Acceso denegado a la ruta de acceso ''C:\TP_Universidad\ProyectoKN\KN_ProyectoClase\''.', CAST(N'2025-03-25T19:47:29.123' AS DateTime), N'Post ActualizarOferta')
 GO
 SET IDENTITY_INSERT [dbo].[Error] OFF
 GO
 
 SET IDENTITY_INSERT [dbo].[Oferta] ON 
 GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (1, 1, 3, CAST(1500.00 AS Decimal(10, 2)), N'Lunes a Viernes de 8:00 a 17:00', 1)
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (13, 8, 1, CAST(2000.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/13.png')
 GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (2, 2, 3, CAST(1800.00 AS Decimal(10, 2)), N'Lunes a Domingo de 08:00 a 18:00', 1)
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (14, 8, 1, CAST(2000.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/14.png')
 GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (3, 4, 5, CAST(2000.00 AS Decimal(10, 2)), N'Lunes, Miércoles y Viernes de 8:00 am - 6:00 pm / presencial ', 1)
-GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (4, 1, 2, CAST(2121.00 AS Decimal(10, 2)), N'21321321', 1)
-GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (5, 4, 1, CAST(5000.00 AS Decimal(10, 2)), N'Lunes a Viernes', 1)
-GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (6, 6, 10, CAST(100.00 AS Decimal(10, 2)), N'LV', 1)
-GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (7, 1, 3, CAST(1500.00 AS Decimal(10, 2)), N'Lunes a Viernes de 8:00 a 17:00', 1)
-GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (8, 2, 3, CAST(1800.00 AS Decimal(10, 2)), N'Lunes a Domingo de 08:00 a 18:00', 1)
-GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (9, 4, 5, CAST(2000.00 AS Decimal(10, 2)), N'Lunes, Miércoles y Viernes de 8:00 am - 6:00 pm / presencial ', 1)
-GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (10, 1, 2, CAST(2121.00 AS Decimal(10, 2)), N'21321321', 1)
-GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (11, 4, 1, CAST(5000.00 AS Decimal(10, 2)), N'Lunes a Viernes', 1)
-GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible]) VALUES (12, 6, 10, CAST(100.00 AS Decimal(10, 2)), N'LV', 1)
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (15, 8, 1, CAST(2500.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
 GO
 SET IDENTITY_INSERT [dbo].[Oferta] OFF
 GO
@@ -138,22 +113,9 @@ GO
 
 SET IDENTITY_INSERT [dbo].[Puesto] ON 
 GO
-INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (1, N'Programador', N'Tareas principales de desarrollo')
-GO
-INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (2, N'Asistente de Base de Datos', N'Tareas principalles de base de datos')
-GO
-INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (3, N'Asistente de Base de Datos', N'Tareas principalles de base de datos')
-GO
-INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (4, N'QA Senior', N'Encargado de realizar pruebas de los sistemas.
-Encargado de documentar las pruebas.
-Encargado de automatizar escenarios.
-Supervisar el trabajo del equipo.')
-GO
-INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (5, N'Encargado de Mercadeo', N'Se encargará de las funcionalidades más importantes de mercadeo')
-GO
-INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (6, N'Encargado de RH', N'Procesos de reclutamiento y selección')
-GO
-INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (7, N'b', N'bc')
+INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (8, N'Encargado de Ventas', N'Se encargará de llevar inventarios
+Reportes de ventas
+Actualización de costos')
 GO
 SET IDENTITY_INSERT [dbo].[Puesto] OFF
 GO
@@ -162,7 +124,7 @@ SET IDENTITY_INSERT [dbo].[Usuario] ON
 GO
 INSERT [dbo].[Usuario] ([Id], [Identificacion], [Contrasenna], [Nombre], [Correo], [Estado], [IdPerfil]) VALUES (4, N'304590415', N'90415', N'EDUARDO JOSE CALVO CASTILLO', N'ecalvo90415@ufide.ac.cr', 1, 2)
 GO
-INSERT [dbo].[Usuario] ([Id], [Identificacion], [Contrasenna], [Nombre], [Correo], [Estado], [IdPerfil]) VALUES (6, N'305440468', N'S63P4', N'Fabricio Arce Salas', N'farce40468@ufide.ac.cr', 1, 1)
+INSERT [dbo].[Usuario] ([Id], [Identificacion], [Contrasenna], [Nombre], [Correo], [Estado], [IdPerfil]) VALUES (6, N'305440468', N'40468', N'Fabricio Arce Salas', N'farce40468@ufide.ac.cr', 1, 1)
 GO
 SET IDENTITY_INSERT [dbo].[Usuario] OFF
 GO
@@ -215,7 +177,8 @@ BEGIN
 			Cantidad,
 			Salario,
 			Horario,
-			Disponible
+			Disponible,
+			Imagen
 	  FROM	dbo.Oferta O
 	  INNER JOIN dbo.Puesto P ON O.IdPuesto = P.Id
 

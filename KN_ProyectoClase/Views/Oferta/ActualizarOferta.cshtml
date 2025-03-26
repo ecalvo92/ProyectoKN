@@ -20,9 +20,10 @@
             </div>
         }
 
-        @using (Html.BeginForm("ActualizarOferta", "Oferta"))
+        @using (Html.BeginForm("ActualizarOferta", "Oferta", FormMethod.Post, new { @enctype = "multipart/form-data" }))
         {
-            @Html.HiddenFor(x => x.Id, new { @class = "form-control form-control-user", @placeholder = "Id", @Required = "true" })
+            @Html.HiddenFor(x => x.Id, new { @class = "form-control form-control-user", @Required = "true" })
+            @Html.HiddenFor(x => x.Imagen, new { @class = "form-control form-control-user" })
 
             <div class="form-group">
                 @Html.DropDownListFor(x => x.IdPuesto, (IEnumerable<SelectListItem>)ViewBag.PuestoCombo, new { @class = "form-control", @Required = "true" })
@@ -36,9 +37,21 @@
             <div class="form-group">
                 @Html.TextBoxFor(x => x.Horario, new { @class = "form-control form-control-user", @placeholder = "Horario", @Required = "true" })
             </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-10">
+                        <input type="file" id="ImagenOferta" name="ImagenOferta" class="form-control">
+                    </div>
+                    <div class="col-2">
+                        @Html.CheckBoxFor(x => x.Disponible, new { @class = "form-check-input" })
+                        Disponible
+                    </div>
+                </div>
+            </div>
+
             <div class="form-check form-group">
-                @Html.CheckBoxFor(x => x.Disponible, new { @class = "form-check-input"})
-                @Html.LabelFor(x => x.Disponible, new { @class = "form-check-label" })
+                <img class="card-img-top" src="@Model.Imagen" style="width:30%; height:120px;" alt="Imagen No cargada">
             </div>
 
             <div style="text-align: right; width: 200px">

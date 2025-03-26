@@ -27,12 +27,12 @@ namespace KN_ProyectoClase.BaseDatos
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Error> Error { get; set; }
         public virtual DbSet<Oferta> Oferta { get; set; }
         public virtual DbSet<Perfil> Perfil { get; set; }
         public virtual DbSet<Puesto> Puesto { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
         public virtual DbSet<UsuariosOferta> UsuariosOferta { get; set; }
-        public virtual DbSet<Error> Error { get; set; }
     
         public virtual ObjectResult<ConsultarOfertas_Result> ConsultarOfertas()
         {

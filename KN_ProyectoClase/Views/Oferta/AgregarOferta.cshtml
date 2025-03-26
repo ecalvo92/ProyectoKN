@@ -20,7 +20,7 @@
             </div>
         }
 
-        @using (Html.BeginForm("AgregarOferta", "Oferta"))
+        @using (Html.BeginForm("AgregarOferta", "Oferta", FormMethod.Post, new { @enctype = "multipart/form-data" }))
         {
             <div class="form-group">
                 @Html.DropDownListFor(m => m.IdPuesto, (IEnumerable<SelectListItem>)ViewBag.PuestoCombo, new { @class = "form-control", @Required = "true" })
@@ -33,6 +33,9 @@
             </div>
             <div class="form-group">
                 @Html.TextBoxFor(x => x.Horario, new { @class = "form-control form-control-user", @placeholder = "Horario", @Required = "true" })
+            </div>
+            <div class="form-group">
+                <input type="file" id="ImagenOferta" name="ImagenOferta" class="form-control" required>
             </div>
 
             <div style="text-align: right; width: 200px">

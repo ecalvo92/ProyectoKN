@@ -21,6 +21,7 @@
                 <th>Cantidad</th>
                 <th>Salario</th>
                 <th>Horario</th>
+                @*<th>Imagen</th>*@
                 <th>Estado</th>
                 <th>Acciones</th>
             </tr>
@@ -38,6 +39,7 @@
                     <td>@item.Cantidad</td>
                     <td>$ @item.Salario.ToString("N2")</td>
                     <td>@item.Horario</td>
+                    @*<td><img class="card-img-top" src="@item.Imagen" style="width:100%; height:125px;" alt="Imagen No cargada"></td>*@
                     <td>@disponible</td>
                     <td><a href="@Url.Action("ActualizarOferta","Oferta", new { q = item.Id })"><i class="fa fa-edit"></i></a></td>
                 </tr>

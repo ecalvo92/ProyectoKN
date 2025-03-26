@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="KN_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="KN_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Error">
           <Key>
             <PropertyRef Name="Id" />
@@ -25,6 +25,7 @@
           <Property Name="Salario" Type="decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="Horario" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Disponible" Type="bit" Nullable="false" />
+          <Property Name="Imagen" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Perfil">
           <Key>
@@ -152,10 +153,21 @@
             <End Role="UsuariosOferta" EntitySet="UsuariosOferta" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="KN_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Error">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdUsuario" Type="Int64" Nullable="false" />
+          <Property Name="Mensaje" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaHora" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Origen" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
         <EntityType Name="Oferta">
           <Key>
             <PropertyRef Name="Id" />
@@ -166,6 +178,7 @@
           <Property Name="Salario" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="Horario" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Disponible" Type="Boolean" Nullable="false" />
+          <Property Name="Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Puesto" Relationship="Self.FK_Oferta_Puesto" FromRole="Oferta" ToRole="Puesto" />
           <NavigationProperty Name="UsuariosOferta" Relationship="Self.FK_UsuariosOferta_Oferta" FromRole="Oferta" ToRole="UsuariosOferta" />
         </EntityType>
@@ -261,6 +274,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="KN_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Error" EntityType="Self.Error" />
           <EntitySet Name="Oferta" EntityType="Self.Oferta" />
           <EntitySet Name="Perfil" EntityType="Self.Perfil" />
           <EntitySet Name="Puesto" EntityType="Self.Puesto" />
@@ -294,7 +308,6 @@
             <Parameter Name="Nombre" Mode="In" Type="String" />
             <Parameter Name="Correo" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="Error" EntityType="KN_DBModel.Error" />
           <FunctionImport Name="RegistrarError">
             <Parameter Name="IdUsuario" Mode="In" Type="Int64" />
             <Parameter Name="Mensaje" Mode="In" Type="String" />
@@ -310,6 +323,7 @@
           <Property Type="Decimal" Name="Salario" Nullable="false" Precision="10" Scale="2" />
           <Property Type="String" Name="Horario" Nullable="false" MaxLength="255" />
           <Property Type="Boolean" Name="Disponible" Nullable="false" />
+          <Property Type="String" Name="Imagen" Nullable="true" />
         </ComplexType>
         <ComplexType Name="ConsultarPuestos_Result">
           <Property Type="Int64" Name="Id" Nullable="false" />
@@ -326,22 +340,23 @@
           <Property Type="Int32" Name="IdPerfil" Nullable="false" />
           <Property Type="String" Name="NombrePerfil" Nullable="false" MaxLength="50" />
         </ComplexType>
-        <EntityType Name="Error">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdUsuario" Type="Int64" Nullable="false" />
-          <Property Name="Mensaje" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="FechaHora" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Origen" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="KN_DBModelStoreContainer" CdmEntityContainer="KN_DBEntities">
+          <EntitySetMapping Name="Error">
+            <EntityTypeMapping TypeName="KN_DBModel.Error">
+              <MappingFragment StoreEntitySet="Error">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Mensaje" ColumnName="Mensaje" />
+                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
+                <ScalarProperty Name="Origen" ColumnName="Origen" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Oferta">
             <EntityTypeMapping TypeName="KN_DBModel.Oferta">
               <MappingFragment StoreEntitySet="Oferta">
@@ -351,6 +366,7 @@
                 <ScalarProperty Name="Salario" ColumnName="Salario" />
                 <ScalarProperty Name="Horario" ColumnName="Horario" />
                 <ScalarProperty Name="Disponible" ColumnName="Disponible" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -406,6 +422,7 @@
                 <ScalarProperty Name="Salario" ColumnName="Salario" />
                 <ScalarProperty Name="Horario" ColumnName="Horario" />
                 <ScalarProperty Name="Disponible" ColumnName="Disponible" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -433,17 +450,6 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="RegistrarCuenta" FunctionName="KN_DBModel.Store.RegistrarCuenta" />
-          <EntitySetMapping Name="Error">
-            <EntityTypeMapping TypeName="KN_DBModel.Error">
-              <MappingFragment StoreEntitySet="Error">
-                <ScalarProperty Name="Origen" ColumnName="Origen" />
-                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
-                <ScalarProperty Name="Mensaje" ColumnName="Mensaje" />
-                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="RegistrarError" FunctionName="KN_DBModel.Store.RegistrarError" />
         </EntityContainerMapping>
       </Mapping>

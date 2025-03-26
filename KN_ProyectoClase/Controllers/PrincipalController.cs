@@ -187,7 +187,7 @@ namespace KN_ProyectoClase.Controllers
             {
                 using (var context = new KN_DBEntities())
                 {
-                    //Si no me he logueado traiga el top 10 mejores
+                    //Si no me he logueado traiga el top 8 mejores
                     var info = context.ConsultarOfertas().Where(x => x.Disponible == true).ToList();
                     return View(info);
                 }
