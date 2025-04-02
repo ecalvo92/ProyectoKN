@@ -20,6 +20,16 @@ CREATE TABLE [dbo].[Error](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
+CREATE TABLE [dbo].[EstadoAplicacion](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[NombreEstado] [varchar](100) NOT NULL,
+ CONSTRAINT [PK_EstadoAplicacion] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
 CREATE TABLE [dbo].[Oferta](
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,
 	[IdPuesto] [bigint] NOT NULL,
@@ -91,13 +101,36 @@ GO
 SET IDENTITY_INSERT [dbo].[Error] OFF
 GO
 
+SET IDENTITY_INSERT [dbo].[EstadoAplicacion] ON 
+GO
+INSERT [dbo].[EstadoAplicacion] ([Id], [NombreEstado]) VALUES (1, N'En Proceso')
+GO
+INSERT [dbo].[EstadoAplicacion] ([Id], [NombreEstado]) VALUES (2, N'En Entrevista')
+GO
+INSERT [dbo].[EstadoAplicacion] ([Id], [NombreEstado]) VALUES (3, N'Descartado')
+GO
+INSERT [dbo].[EstadoAplicacion] ([Id], [NombreEstado]) VALUES (4, N'Contratado')
+GO
+SET IDENTITY_INSERT [dbo].[EstadoAplicacion] OFF
+GO
+
 SET IDENTITY_INSERT [dbo].[Oferta] ON 
 GO
 INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (13, 8, 1, CAST(2000.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/13.png')
 GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (14, 8, 1, CAST(2000.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/14.png')
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (14, 8, 1, CAST(2100.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/14.png')
 GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (15, 8, 1, CAST(2500.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (15, 8, 1, CAST(2200.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
+GO
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (16, 8, 1, CAST(5000.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
+GO
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (17, 8, 1, CAST(2400.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
+GO
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (18, 8, 1, CAST(2500.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
+GO
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (19, 8, 1, CAST(2600.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
+GO
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (20, 8, 1, CAST(2700.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
 GO
 SET IDENTITY_INSERT [dbo].[Oferta] OFF
 GO
@@ -129,6 +162,21 @@ GO
 SET IDENTITY_INSERT [dbo].[Usuario] OFF
 GO
 
+SET IDENTITY_INSERT [dbo].[UsuariosOferta] ON 
+GO
+INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (5, 4, 16, CAST(N'2025-04-01T20:11:09.993' AS DateTime), 1)
+GO
+INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (6, 6, 20, CAST(N'2025-04-01T20:12:41.460' AS DateTime), 1)
+GO
+INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (7, 4, 20, CAST(N'2025-04-01T20:38:50.410' AS DateTime), 1)
+GO
+INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (8, 4, 19, CAST(N'2025-04-01T20:39:02.153' AS DateTime), 1)
+GO
+INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (9, 4, 18, CAST(N'2025-04-01T20:39:11.977' AS DateTime), 1)
+GO
+SET IDENTITY_INSERT [dbo].[UsuariosOferta] OFF
+GO
+
 ALTER TABLE [dbo].[Usuario] ADD  CONSTRAINT [UK_Correo] UNIQUE NONCLUSTERED 
 (
 	[Correo] ASC
@@ -151,6 +199,12 @@ ALTER TABLE [dbo].[Usuario]  WITH CHECK ADD  CONSTRAINT [FK_Usuario_Perfil] FORE
 REFERENCES [dbo].[Perfil] ([Id])
 GO
 ALTER TABLE [dbo].[Usuario] CHECK CONSTRAINT [FK_Usuario_Perfil]
+GO
+
+ALTER TABLE [dbo].[UsuariosOferta]  WITH CHECK ADD  CONSTRAINT [FK_UsuariosOferta_EstadoAplicacion] FOREIGN KEY([Estado])
+REFERENCES [dbo].[EstadoAplicacion] ([Id])
+GO
+ALTER TABLE [dbo].[UsuariosOferta] CHECK CONSTRAINT [FK_UsuariosOferta_EstadoAplicacion]
 GO
 
 ALTER TABLE [dbo].[UsuariosOferta]  WITH CHECK ADD  CONSTRAINT [FK_UsuariosOferta_Oferta] FOREIGN KEY([IdOferta])
