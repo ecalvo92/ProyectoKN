@@ -33,6 +33,7 @@ namespace KN_ProyectoClase.BaseDatos
         public virtual DbSet<Puesto> Puesto { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
         public virtual DbSet<UsuariosOferta> UsuariosOferta { get; set; }
+        public virtual DbSet<EstadoAplicacion> EstadoAplicacion { get; set; }
     
         public virtual ObjectResult<ConsultarOfertas_Result> ConsultarOfertas()
         {

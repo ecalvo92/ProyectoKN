@@ -10,14 +10,14 @@ namespace KN_ProyectoClase.Models
 {
 	public class Utilitarios
 	{
-        public bool EnviarCorreo(Usuario info, string mensaje, string titulo)
+        public bool EnviarCorreo(string correo, string mensaje, string titulo)
         {
             string cuenta = ConfigurationManager.AppSettings["CorreoNotificaciones"].ToString();
             string contrasenna = ConfigurationManager.AppSettings["ContrasennaNotificaciones"].ToString();
 
             MailMessage message = new MailMessage();
             message.From = new MailAddress(cuenta);
-            message.To.Add(new MailAddress(info.Correo));
+            message.To.Add(new MailAddress(correo));
             message.Subject = titulo;
             message.Body = mensaje;
             message.Priority = MailPriority.Normal;

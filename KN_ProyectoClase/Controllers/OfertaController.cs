@@ -2,6 +2,7 @@
 using KN_ProyectoClase.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -180,6 +181,35 @@ namespace KN_ProyectoClase.Controllers
                 return View("Error");
             }
         }
+
+        [HttpGet]
+        public ActionResult ConsultarOfertasAplicadas()
+        {
+            try
+            {
+                var IdUsuario = long.Parse(Session["IdUsuario"].ToString());
+
+                using (var context = new KN_DBEntities())
+                {
+                    var info = context.UsuariosOferta
+                            .Include(x => x.EstadoAplicacion)
+                            .Include(x => x.Oferta)
+                            .Where(x => x.IdUsuario == IdUsuario).ToList();
+                        
+                        //(from uo in context.UsuariosOferta
+                        //        join on  in context.EstadoAplicacion   
+                        //        where uo.IdUsuario == IdUsuario
+                        //        select uo).ToList();
+                    
+                    return View(info);
+                }
+            }
+            catch (Exception ex)
+            {
+                error.RegistrarError(ex.Message, "Get ConsultarOfertasDisponibles");
+                return View("Error");
+            }
+        }        
 
         private void CargarComboPuestos()
         {

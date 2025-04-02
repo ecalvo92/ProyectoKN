@@ -55,7 +55,7 @@ namespace KN_ProyectoClase.Controllers
                         context.SaveChanges();
 
                         string mensaje = $"Hola {info.Nombre}, se ha detectado el cambio de su contraseña.";
-                        var notificacion = util.EnviarCorreo(info, mensaje, "Seguridad sistema KN");
+                        var notificacion = util.EnviarCorreo(info.Correo, mensaje, "Seguridad sistema KN");
 
                         if (notificacion)
                             return RedirectToAction("Inicio", "Principal");

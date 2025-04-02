@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="KN_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="KN_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Error">
           <Key>
             <PropertyRef Name="Id" />
@@ -14,6 +14,13 @@
           <Property Name="Mensaje" Type="varchar(max)" Nullable="false" />
           <Property Name="FechaHora" Type="datetime" Nullable="false" />
           <Property Name="Origen" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EstadoAplicacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreEstado" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="Oferta">
           <Key>
@@ -88,6 +95,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UsuariosOferta_EstadoAplicacion">
+          <End Role="EstadoAplicacion" Type="Self.EstadoAplicacion" Multiplicity="1" />
+          <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoAplicacion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsuariosOferta">
+              <PropertyRef Name="Estado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UsuariosOferta_Oferta">
           <End Role="Oferta" Type="Self.Oferta" Multiplicity="1" />
           <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="*" />
@@ -131,6 +150,7 @@
         </Function>
         <EntityContainer Name="KN_DBModelStoreContainer">
           <EntitySet Name="Error" EntityType="Self.Error" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EstadoAplicacion" EntityType="Self.EstadoAplicacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Oferta" EntityType="Self.Oferta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Perfil" EntityType="Self.Perfil" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Puesto" EntityType="Self.Puesto" Schema="dbo" store:Type="Tables" />
@@ -144,6 +164,10 @@
             <End Role="Perfil" EntitySet="Perfil" />
             <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
+          <AssociationSet Name="FK_UsuariosOferta_EstadoAplicacion" Association="Self.FK_UsuariosOferta_EstadoAplicacion">
+            <End Role="EstadoAplicacion" EntitySet="EstadoAplicacion" />
+            <End Role="UsuariosOferta" EntitySet="UsuariosOferta" />
+          </AssociationSet>
           <AssociationSet Name="FK_UsuariosOferta_Oferta" Association="Self.FK_UsuariosOferta_Oferta">
             <End Role="Oferta" EntitySet="Oferta" />
             <End Role="UsuariosOferta" EntitySet="UsuariosOferta" />
@@ -153,8 +177,7 @@
             <End Role="UsuariosOferta" EntitySet="UsuariosOferta" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="KN_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -224,6 +247,7 @@
           <Property Name="Estado" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Oferta" Relationship="Self.FK_UsuariosOferta_Oferta" FromRole="UsuariosOferta" ToRole="Oferta" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_UsuariosOferta_Usuario" FromRole="UsuariosOferta" ToRole="Usuario" />
+          <NavigationProperty Name="EstadoAplicacion" Relationship="KN_DBModel.FK_UsuariosOferta_EstadoAplicacion" FromRole="UsuariosOferta" ToRole="EstadoAplicacion" />
         </EntityType>
         <Association Name="FK_Oferta_Puesto">
           <End Role="Puesto" Type="Self.Puesto" Multiplicity="1" />
@@ -313,6 +337,11 @@
             <Parameter Name="Mensaje" Mode="In" Type="String" />
             <Parameter Name="Origen" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="EstadoAplicacion" EntityType="KN_DBModel.EstadoAplicacion" />
+          <AssociationSet Name="FK_UsuariosOferta_EstadoAplicacion" Association="KN_DBModel.FK_UsuariosOferta_EstadoAplicacion">
+            <End Role="EstadoAplicacion" EntitySet="EstadoAplicacion" />
+            <End Role="UsuariosOferta" EntitySet="UsuariosOferta" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="ConsultarOfertas_Result">
           <Property Type="Int64" Name="Id" Nullable="false" />
@@ -340,6 +369,26 @@
           <Property Type="Int32" Name="IdPerfil" Nullable="false" />
           <Property Type="String" Name="NombrePerfil" Nullable="false" MaxLength="50" />
         </ComplexType>
+        <EntityType Name="EstadoAplicacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreEstado" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UsuariosOferta" Relationship="KN_DBModel.FK_UsuariosOferta_EstadoAplicacion" FromRole="EstadoAplicacion" ToRole="UsuariosOferta" />
+        </EntityType>
+        <Association Name="FK_UsuariosOferta_EstadoAplicacion">
+          <End Type="KN_DBModel.EstadoAplicacion" Role="EstadoAplicacion" Multiplicity="1" />
+          <End Type="KN_DBModel.UsuariosOferta" Role="UsuariosOferta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoAplicacion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsuariosOferta">
+              <PropertyRef Name="Estado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -451,6 +500,14 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="RegistrarCuenta" FunctionName="KN_DBModel.Store.RegistrarCuenta" />
           <FunctionImportMapping FunctionImportName="RegistrarError" FunctionName="KN_DBModel.Store.RegistrarError" />
+          <EntitySetMapping Name="EstadoAplicacion">
+            <EntityTypeMapping TypeName="KN_DBModel.EstadoAplicacion">
+              <MappingFragment StoreEntitySet="EstadoAplicacion">
+                <ScalarProperty Name="NombreEstado" ColumnName="NombreEstado" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

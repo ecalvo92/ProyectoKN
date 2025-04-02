@@ -22,5 +22,6 @@ namespace KN_ProyectoClase.BaseDatos
     
         public virtual Oferta Oferta { get; set; }
         public virtual Usuario Usuario { get; set; }
+        public virtual EstadoAplicacion EstadoAplicacion { get; set; }
     }
 }

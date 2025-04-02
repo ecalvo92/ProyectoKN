@@ -66,6 +66,7 @@
                 <div class="modal-body">
 
                     @Html.Hidden("Id", "")
+                    @Html.Hidden("Nombre", "")
 
                     <textarea id="lblDescripcion" class="form-control" rows="10" style="resize:none; background-color:transparent;" readonly="readonly"></textarea>
 
@@ -89,6 +90,7 @@
     $(document).on("click", ".abrirModal", function () {
 
         $("#lblNombre").text($(this).attr("data-nombre"));
+        $("#Nombre").val($(this).attr("data-nombre"));
         $("#Id").val($(this).attr("data-id"));
         $("#lblDescripcion").text($(this).attr("data-desc"));
         $("#lblHorario").text($(this).attr("data-horario"));

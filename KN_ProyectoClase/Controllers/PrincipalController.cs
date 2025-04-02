@@ -110,6 +110,7 @@ namespace KN_ProyectoClase.Controllers
                         Session["NombreUsuario"] = info.NombreUsuario;
                         Session["NombrePerfilUsuario"] = info.NombrePerfil;
                         Session["IdPerfilUsuario"] = info.IdPerfil;
+                        Session["CorreoUsuario"] = info.Correo;
                         return RedirectToAction("Inicio", "Principal");
                     }
                     else
@@ -162,7 +163,7 @@ namespace KN_ProyectoClase.Controllers
                         context.SaveChanges();
 
                         string mensaje = $"Hola {info.Nombre}, por favor utilice el siguiente código para ingresar al sistema: {codigoTemporal}";
-                        var notificacion = util.EnviarCorreo(info, mensaje, "Acceso al sistema KN");
+                        var notificacion = util.EnviarCorreo(info.Correo, mensaje, "Acceso al sistema KN");
                     
                         if(notificacion)
                             return RedirectToAction("IniciarSesion", "Principal");
@@ -208,14 +209,13 @@ namespace KN_ProyectoClase.Controllers
         }
 
         [HttpPost]
-        public ActionResult AplicarOferta(Oferta model)
+        public ActionResult AplicarOferta(ConsultarOfertas_Result model)
         {
             try
             {
                 using (var context = new KN_DBEntities())
                 {
                     var IdUsuario = long.Parse(Session["IdUsuario"].ToString());
-
 
                     var info = context.UsuariosOferta.Where(x => x.IdUsuario == IdUsuario
                                                               && x.IdOferta == model.Id).FirstOrDefault();
@@ -240,8 +240,10 @@ namespace KN_ProyectoClase.Controllers
 
                     if (result > 0)
                     {
-                        //Nos envie a la pantalla de mis ofertas aplicadas
-                        return RedirectToAction("Inicio", "Principal");
+                        string mensaje = $"Hola { Session["NombreUsuario"].ToString() }, la postulación en la oferta { model.Nombre} ha sido registrada";
+                        var notificacion = util.EnviarCorreo(Session["CorreoUsuario"].ToString(), mensaje, "Postulación de Ofertas");
+
+                        return RedirectToAction("ConsultarOfertasAplicadas", "Oferta");
                     }
                     else
                     {
