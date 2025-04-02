@@ -192,15 +192,11 @@ namespace KN_ProyectoClase.Controllers
                 using (var context = new KN_DBEntities())
                 {
                     var info = context.UsuariosOferta
-                            .Include(x => x.EstadoAplicacion)
-                            .Include(x => x.Oferta)
+                            .Include(a => a.EstadoAplicacion)
+                            .Include(o => o.Oferta.Puesto)
+                            .Include(a => a.Oferta)
                             .Where(x => x.IdUsuario == IdUsuario).ToList();
-                        
-                        //(from uo in context.UsuariosOferta
-                        //        join on  in context.EstadoAplicacion   
-                        //        where uo.IdUsuario == IdUsuario
-                        //        select uo).ToList();
-                    
+
                     return View(info);
                 }
             }
