@@ -51,6 +51,7 @@ namespace KN_ProyectoClase.Controllers
             }
         }
 
+
         [HttpGet]
         public ActionResult AgregarOferta()
         {
@@ -110,6 +111,7 @@ namespace KN_ProyectoClase.Controllers
                 return View("Error");
             }
         }
+
 
         [HttpGet]
         public ActionResult ActualizarOferta(long q)
@@ -180,6 +182,7 @@ namespace KN_ProyectoClase.Controllers
             }
         }
 
+        //Consulta las ofertas aplicadas por un usuario
         [HttpGet]
         public ActionResult ConsultarOfertasAplicadas()
         {
@@ -205,6 +208,7 @@ namespace KN_ProyectoClase.Controllers
             }
         }
 
+        //Aplica en una oferta desde la vista de Ofertas Disponibles
         [HttpPost]
         public ActionResult AplicarOferta(ConsultarOfertas_Result model)
         {
@@ -256,21 +260,16 @@ namespace KN_ProyectoClase.Controllers
             }
         }
 
+        //Consulta las ofertas para poder cambiar su etapa 
         [HttpGet]
         public ActionResult SeguimientoOfertas()
         {
             try
             {
-                using (var context = new KN_DBEntities())
-                {
-                    var info = context.UsuariosOferta
-                            .Include(a => a.EstadoAplicacion)
-                            .Include(a => a.Usuario)
-                            .Include(o => o.Oferta.Puesto)
-                            .Include(a => a.Oferta).ToList();
+                CargarComboEtapas();
+                var datos = ConsultarSeguimientoOfertas();
 
-                    return View(info);
-                }
+                return View(datos);
             }
             catch (Exception ex)
             {
@@ -279,11 +278,65 @@ namespace KN_ProyectoClase.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult SeguimientoOfertas(UsuariosOferta model)
+        {
+            try
+            {
+                using (var context = new KN_DBEntities())
+                {
+                    var info = context.UsuariosOferta.Where(x => x.Id == model.Id).FirstOrDefault();
+                    info.Estado = model.Estado;
+
+                    if (model.Estado == 4)
+                    { 
+                        var oferta = context.Oferta.Where(x => x.Id == model.IdOferta).FirstOrDefault();
+                        oferta.Cantidad = oferta.Cantidad - 1;
+                    }
+                    
+                    var result = context.SaveChanges();
+
+                    if (result > 0)
+                    {
+                        string mensaje = $"Hola {Session["NombreUsuario"].ToString()}, le informamos que su postulación ha cambiado de estado";
+                        var notificacion = util.EnviarCorreo(Session["CorreoUsuario"].ToString(), mensaje, "Postulación de Ofertas");
+
+                        return RedirectToAction("SeguimientoOfertas", "Oferta");
+                    }
+                    else
+                    {
+                        CargarComboEtapas();
+                        var datos = ConsultarSeguimientoOfertas();
+
+                        ViewBag.Mensaje = "La estapa no se ha podido actualizar correctamente";
+                        return View(datos);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.RegistrarError(ex.Message, "Post SeguimientoOfertas");
+                return View("Error");
+            }
+        }
+
         private List<ConsultarOfertas_Result> ConsultarOfertasDisp()
         {
             using (var context = new KN_DBEntities())
             {
-                return context.ConsultarOfertas().Where(x => x.Disponible == true).ToList();
+                return context.ConsultarOfertas().Where(x => x.Disponible == true && x.Cantidad > 0).ToList();
+            }
+        }
+
+        private List<UsuariosOferta> ConsultarSeguimientoOfertas()
+        {
+            using (var context = new KN_DBEntities())
+            {
+                return context.UsuariosOferta
+                        .Include(a => a.EstadoAplicacion)
+                        .Include(a => a.Usuario)
+                        .Include(o => o.Oferta.Puesto)
+                        .Include(a => a.Oferta).ToList();
             }
         }
 
@@ -302,6 +355,23 @@ namespace KN_ProyectoClase.Controllers
                 }
 
                 ViewBag.PuestoCombo = puestoCombo;
+            }
+        }
+
+        private void CargarComboEtapas()
+        {
+            using (var context = new KN_DBEntities())
+            {
+                var info = context.EstadoAplicacion.ToList();
+
+                var etapaCombo = new List<SelectListItem>();
+
+                foreach (var item in info)
+                {
+                    etapaCombo.Add(new SelectListItem { Value = item.Id.ToString(), Text = item.NombreEstado });
+                }
+
+                ViewBag.EtapaCombo = etapaCombo;
             }
         }
 

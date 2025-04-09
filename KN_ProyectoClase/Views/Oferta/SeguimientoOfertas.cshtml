@@ -21,13 +21,13 @@
     <table id="example" class="table table-bordered table-hover">
         <thead>
             <tr>
-                <th>#</th>
                 <th>Oferta</th>
                 <th>Participante</th>
                 <th>Salario</th>
                 <th>Horario</th>
                 <th>Plazas</th>
-                <th>Etapa</th>
+                <th>Etapa Actual</th>
+                <th>Actualización</th>
             </tr>
         </thead>
         <tbody>
@@ -35,13 +35,27 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.IdOferta</td>
-                    <td>@item.Oferta.Puesto.Nombre</td>
+                    <td>@item.IdOferta. @item.Oferta.Puesto.Nombre</td>
                     <td>@item.Usuario.Nombre</td>
                     <td>$ @item.Oferta.Salario.ToString("N2")</td>
                     <td>@item.Oferta.Horario</td>
                     <td>@item.Oferta.Cantidad</td>
                     <td>@item.EstadoAplicacion.NombreEstado</td>
+                    <td>
+
+                        @if (item.Oferta.Cantidad > 0)
+                        {
+                            using (Html.BeginForm("SeguimientoOfertas", "Oferta"))
+                            {
+                            @Html.Hidden("Id", item.Id)
+                            @Html.Hidden("IdOferta", item.IdOferta)
+                            @Html.DropDownList("Estado",
+                                                         (IEnumerable<SelectListItem>)ViewBag.EtapaCombo,
+                                                         new { @class = "form-control", @Required = "true", @onchange = "this.form.submit();" })
+                            }
+                        }
+
+                    </td>
                 </tr>
             }
 
