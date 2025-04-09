@@ -1,0 +1,69 @@
+﻿@model List<KN_ProyectoClase.BaseDatos.UsuariosOferta>
+
+@{
+    ViewBag.Title = "ConsultarOfertas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <h5 class="m-0 font-weight-bold text-primary">Seguimiento de Ofertas</h5>
+
+    <br />
+
+    @if (ViewBag.Mensaje != null)
+    {
+        <div class="alert alert-warning msjCentrado">
+            @ViewBag.Mensaje
+        </div>
+    }
+
+    <table id="example" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Oferta</th>
+                <th>Participante</th>
+                <th>Salario</th>
+                <th>Horario</th>
+                <th>Plazas</th>
+                <th>Etapa</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.IdOferta</td>
+                    <td>@item.Oferta.Puesto.Nombre</td>
+                    <td>@item.Usuario.Nombre</td>
+                    <td>$ @item.Oferta.Salario.ToString("N2")</td>
+                    <td>@item.Oferta.Horario</td>
+                    <td>@item.Oferta.Cantidad</td>
+                    <td>@item.EstadoAplicacion.NombreEstado</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>
+
+<script src="~/Template/js/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        var table = new DataTable('#example', {
+            language: {
+                url: '//cdn.datatables.net/plug-ins/2.2.2/i18n/es-ES.json',
+            },
+            columnDefs: [
+                { "className": "dt-left", "targets": "_all" }
+            ]
+        });
+
+    });
+
+</script>

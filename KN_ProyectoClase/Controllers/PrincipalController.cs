@@ -203,7 +203,7 @@ namespace KN_ProyectoClase.Controllers
             {
                 return context.ConsultarOfertas().Where(x => x.Disponible == true && x.Cantidad > 0)
                     .OrderByDescending(x => x.Salario)
-                    .Take(4)
+                    .Take(8)
                     .ToList();
             }
         }

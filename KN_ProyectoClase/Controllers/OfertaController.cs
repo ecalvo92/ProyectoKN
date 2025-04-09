@@ -256,6 +256,29 @@ namespace KN_ProyectoClase.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult SeguimientoOfertas()
+        {
+            try
+            {
+                using (var context = new KN_DBEntities())
+                {
+                    var info = context.UsuariosOferta
+                            .Include(a => a.EstadoAplicacion)
+                            .Include(a => a.Usuario)
+                            .Include(o => o.Oferta.Puesto)
+                            .Include(a => a.Oferta).ToList();
+
+                    return View(info);
+                }
+            }
+            catch (Exception ex)
+            {
+                error.RegistrarError(ex.Message, "Get SeguimientoOfertas");
+                return View("Error");
+            }
+        }
+
         private List<ConsultarOfertas_Result> ConsultarOfertasDisp()
         {
             using (var context = new KN_DBEntities())

@@ -285,6 +285,7 @@
     <Content Include="Views\Usuario\CambiarAcceso.cshtml" />
     <Content Include="Views\Usuario\ActualizarDatos.cshtml" />
     <Content Include="Views\Oferta\ConsultarOfertasAplicadas.cshtml" />
+    <Content Include="Views\Oferta\SeguimientoOfertas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

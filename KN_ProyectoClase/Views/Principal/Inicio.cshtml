@@ -20,13 +20,13 @@
             <div class="card" style="margin-bottom:27px;">
 
                 <div style="text-align:center">
-                    <img class="card-img-top" src="@item.Imagen" style="width:60%; height:175px;" alt="Imagen No cargada">
+                    <img class="card-img-top" src="@item.Imagen" style="width:50%; height:135px;" alt="Imagen No cargada">
                 </div>
 
                 <div class="card-body">
-                    <h5 class="card-title">@item.Id - @item.Nombre</h5>
+                    <h5 class="card-title">@item.Id. @item.Nombre</h5>
                     <h5 class="card-title">Salario: $@item.Salario.ToString("N2")</h5>
-                    <h5 class="card-title">Espacios: @item.Cantidad</h5>
+                    <h5 class="card-title">Plazas: @item.Cantidad</h5>
                     <h5 class="card-title">Horario: @item.Horario</h5>
 
                     @if (Session["IdPerfilUsuario"] != null)
