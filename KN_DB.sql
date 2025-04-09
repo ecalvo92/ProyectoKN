@@ -111,26 +111,16 @@ INSERT [dbo].[EstadoAplicacion] ([Id], [NombreEstado]) VALUES (3, N'Descartado')
 GO
 INSERT [dbo].[EstadoAplicacion] ([Id], [NombreEstado]) VALUES (4, N'Contratado')
 GO
+INSERT [dbo].[EstadoAplicacion] ([Id], [NombreEstado]) VALUES (5, N'Archivado')
+GO
 SET IDENTITY_INSERT [dbo].[EstadoAplicacion] OFF
 GO
 
 SET IDENTITY_INSERT [dbo].[Oferta] ON 
 GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (13, 8, 1, CAST(2000.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/13.png')
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (14, 9, 0, CAST(9100.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/14.png')
 GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (14, 8, 1, CAST(2100.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/14.png')
-GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (15, 8, 1, CAST(2200.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
-GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (16, 8, 1, CAST(5000.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
-GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (17, 8, 1, CAST(2400.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
-GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (18, 8, 1, CAST(2500.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
-GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (19, 8, 1, CAST(2600.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
-GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (20, 8, 1, CAST(2700.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (20, 8, 0, CAST(2700.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
 GO
 SET IDENTITY_INSERT [dbo].[Oferta] OFF
 GO
@@ -150,6 +140,10 @@ INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (8, N'Encargado de 
 Reportes de ventas
 Actualización de costos')
 GO
+INSERT [dbo].[Puesto] ([Id], [Nombre], [Descripcion]) VALUES (9, N'Admin Base Datos', N'Programación en SQL
+Programación en ORACLE
+Programación en MySQL')
+GO
 SET IDENTITY_INSERT [dbo].[Puesto] OFF
 GO
 
@@ -157,22 +151,20 @@ SET IDENTITY_INSERT [dbo].[Usuario] ON
 GO
 INSERT [dbo].[Usuario] ([Id], [Identificacion], [Contrasenna], [Nombre], [Correo], [Estado], [IdPerfil]) VALUES (4, N'304590415', N'90415', N'EDUARDO JOSE CALVO CASTILLO', N'ecalvo90415@ufide.ac.cr', 1, 2)
 GO
-INSERT [dbo].[Usuario] ([Id], [Identificacion], [Contrasenna], [Nombre], [Correo], [Estado], [IdPerfil]) VALUES (6, N'305440468', N'40468', N'Fabricio Arce Salas', N'farce40468@ufide.ac.cr', 1, 1)
+INSERT [dbo].[Usuario] ([Id], [Identificacion], [Contrasenna], [Nombre], [Correo], [Estado], [IdPerfil]) VALUES (6, N'305440468', N'40468', N'FABRICIO ARCE SALAS', N'farce40468@ufide.ac.cr', 1, 1)
+GO
+INSERT [dbo].[Usuario] ([Id], [Identificacion], [Contrasenna], [Nombre], [Correo], [Estado], [IdPerfil]) VALUES (7, N'402530307', N'30307', N'SEBASTIAN HERNANDEZ JIMENEZ', N'shernandez30307@ufide.ac.cr', 1, 2)
 GO
 SET IDENTITY_INSERT [dbo].[Usuario] OFF
 GO
 
 SET IDENTITY_INSERT [dbo].[UsuariosOferta] ON 
 GO
-INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (5, 4, 16, CAST(N'2025-04-01T20:11:09.993' AS DateTime), 1)
+INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (10, 4, 20, CAST(N'2025-04-08T18:46:02.573' AS DateTime), 4)
 GO
-INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (6, 6, 20, CAST(N'2025-04-01T20:12:41.460' AS DateTime), 1)
+INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (11, 4, 14, CAST(N'2025-04-08T18:48:38.893' AS DateTime), 5)
 GO
-INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (7, 4, 20, CAST(N'2025-04-01T20:38:50.410' AS DateTime), 1)
-GO
-INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (8, 4, 19, CAST(N'2025-04-01T20:39:02.153' AS DateTime), 1)
-GO
-INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (9, 4, 18, CAST(N'2025-04-01T20:39:11.977' AS DateTime), 1)
+INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (12, 7, 14, CAST(N'2025-04-08T19:09:14.840' AS DateTime), 4)
 GO
 SET IDENTITY_INSERT [dbo].[UsuariosOferta] OFF
 GO
