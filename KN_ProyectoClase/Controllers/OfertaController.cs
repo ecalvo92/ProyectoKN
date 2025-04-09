@@ -14,6 +14,7 @@ namespace KN_ProyectoClase.Controllers
     public class OfertaController : Controller
     {
         RegistroErrores error = new RegistroErrores();
+        Utilitarios util = new Utilitarios();
 
         //Consulta las ofertas para darles mantenimiento
         [HttpGet]
@@ -40,11 +41,8 @@ namespace KN_ProyectoClase.Controllers
         {
             try
             {
-                using (var context = new KN_DBEntities())
-                {
-                    var info = context.ConsultarOfertas().Where(x => x.Disponible == true).ToList();
-                    return View(info);
-                }
+                var info = ConsultarOfertasDisp();
+                return View(info);
             }
             catch (Exception ex)
             {
@@ -205,7 +203,66 @@ namespace KN_ProyectoClase.Controllers
                 error.RegistrarError(ex.Message, "Get ConsultarOfertasDisponibles");
                 return View("Error");
             }
-        }        
+        }
+
+        [HttpPost]
+        public ActionResult AplicarOferta(ConsultarOfertas_Result model)
+        {
+            try
+            {
+                using (var context = new KN_DBEntities())
+                {
+                    var IdUsuario = long.Parse(Session["IdUsuario"].ToString());
+
+                    var info = context.UsuariosOferta.Where(x => x.IdUsuario == IdUsuario
+                                                              && x.IdOferta == model.Id).FirstOrDefault();
+
+                    var ofertasTop = ConsultarOfertasDisp();
+
+                    if (info != null)
+                    {
+                        ViewBag.Mensaje = "Ya se encuentra participando en esta oferta";
+                        return View("ConsultarOfertasDisponibles", ofertasTop);
+                    }
+
+                    UsuariosOferta tabla = new UsuariosOferta();
+                    tabla.Id = 0;
+                    tabla.IdUsuario = long.Parse(Session["IdUsuario"].ToString());
+                    tabla.IdOferta = model.Id;
+                    tabla.Fecha = DateTime.Now;
+                    tabla.Estado = 1;
+
+                    context.UsuariosOferta.Add(tabla);
+                    var result = context.SaveChanges();
+
+                    if (result > 0)
+                    {
+                        string mensaje = $"Hola {Session["NombreUsuario"].ToString()}, la postulación en la oferta {model.Nombre} ha sido registrada";
+                        var notificacion = util.EnviarCorreo(Session["CorreoUsuario"].ToString(), mensaje, "Postulación de Ofertas");
+
+                        return RedirectToAction("ConsultarOfertasAplicadas", "Oferta");
+                    }
+                    else
+                    {
+                        ViewBag.Mensaje = "No fue posible aplicar en esta oferta";
+                        return View("ConsultarOfertasDisponibles", ofertasTop);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.RegistrarError(ex.Message, "Post AplicarOferta");
+                return View("Error");
+            }
+        }
+
+        private List<ConsultarOfertas_Result> ConsultarOfertasDisp()
+        {
+            using (var context = new KN_DBEntities())
+            {
+                return context.ConsultarOfertas().Where(x => x.Disponible == true).ToList();
+            }
+        }
 
         private void CargarComboPuestos()
         {

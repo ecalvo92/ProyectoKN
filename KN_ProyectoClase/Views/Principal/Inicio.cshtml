@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="card-body">
-                    <h5 class="card-title">@item.Nombre</h5>
+                    <h5 class="card-title">@item.Id - @item.Nombre</h5>
                     <h5 class="card-title">Salario: $@item.Salario.ToString("N2")</h5>
                     <h5 class="card-title">Espacios: @item.Cantidad</h5>
                     <h5 class="card-title">Horario: @item.Horario</h5>
@@ -88,7 +88,6 @@
 <script>
 
     $(document).on("click", ".abrirModal", function () {
-
         $("#lblNombre").text($(this).attr("data-nombre"));
         $("#Nombre").val($(this).attr("data-nombre"));
         $("#Id").val($(this).attr("data-id"));

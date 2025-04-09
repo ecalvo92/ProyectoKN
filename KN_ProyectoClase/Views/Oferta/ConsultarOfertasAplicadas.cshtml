@@ -11,9 +11,17 @@
 
     <br />
 
+    @if (ViewBag.Mensaje != null)
+    {
+        <div class="alert alert-warning msjCentrado">
+            @ViewBag.Mensaje
+        </div>
+    }
+
     <table id="example" class="table table-bordered table-hover">
         <thead>
             <tr>
+                <th>#</th>
                 <th>Oferta</th>
                 <th>Fecha</th>
                 <th>Estado</th>
@@ -26,6 +34,7 @@
             @foreach (var item in Model)
             {
                 <tr>
+                    <td>@item.IdOferta</td>
                     <td>@item.Oferta.Puesto.Nombre</td>
                     <td>@item.Fecha</td>
                     <td>@item.EstadoAplicacion.NombreEstado</td>

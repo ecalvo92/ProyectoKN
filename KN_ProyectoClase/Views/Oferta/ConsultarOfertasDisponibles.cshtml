@@ -11,6 +11,13 @@
 
     <br />
 
+    @if (ViewBag.Mensaje != null)
+    {
+        <div class="alert alert-warning msjCentrado">
+            @ViewBag.Mensaje
+        </div>
+    }
+
     <table id="example" class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -19,7 +26,6 @@
                 <th>Cantidad</th>
                 <th>Salario</th>
                 <th>Horario</th>
-                <th>Estado</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -27,22 +33,62 @@
 
             @foreach (var item in Model)
             {
-                var disponible = item.Disponible ? "Activo" : "Inactivo";
-
                 <tr>
                     <td>@item.Id</td>
                     <td>@item.Nombre</td>
                     <td>@item.Cantidad</td>
                     <td>$ @item.Salario.ToString("N2")</td>
                     <td>@item.Horario</td>
-                    <td>@disponible</td>
-                    <td><input type="button" class="btn btn-outline-primary" value="Ver Detalle" /></td>
+                    <td>
+                        <button type="button" class="btn btn-primary abrirModal" data-toggle="modal" data-target="#exampleModal"
+                                data-nombre="@item.Nombre"
+                                data-id="@item.Id"
+                                data-desc="@item.Descripcion"
+                                data-salario="@item.Salario"
+                                data-horario="@item.Horario">
+                            Ver Detalle
+                        </button>
+                    </td>
                 </tr>
             }
 
         </tbody>
     </table>
 
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><label id="lblNombre"></label></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            @using (Html.BeginForm("AplicarOferta", "Oferta"))
+            {
+                <div class="modal-body">
+
+                    @Html.Hidden("Id", "")
+                    @Html.Hidden("Nombre", "")
+
+                    <textarea id="lblDescripcion" class="form-control" rows="10" style="resize:none; background-color:transparent;" readonly="readonly"></textarea>
+
+                    <br />
+                    El salario es: <label id="lblSalario"></label><br />
+                    El horario es: <label id="lblHorario"></label><br />
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" value="APLICAR" />
+                </div>
+            }
+
+        </div>
+    </div>
 </div>
 
 <script src="~/Template/js/jquery.min.js"></script>
@@ -59,6 +105,15 @@
             ]
         });
 
+    });
+
+    $(document).on("click", ".abrirModal", function () {
+        $("#lblNombre").text($(this).attr("data-nombre"));
+        $("#Nombre").val($(this).attr("data-nombre"));
+        $("#Id").val($(this).attr("data-id"));
+        $("#lblDescripcion").text($(this).attr("data-desc"));
+        $("#lblHorario").text($(this).attr("data-horario"));
+        $("#lblSalario").text($(this).attr("data-salario"));
     });
 
 </script>

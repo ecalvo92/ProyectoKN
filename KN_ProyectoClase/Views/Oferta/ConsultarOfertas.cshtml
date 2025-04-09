@@ -13,6 +13,13 @@
         <a class="btn btn-primary" href="@Url.Action("AgregarOferta","Oferta")"> + Agregar</a>
     </div>
 
+    @if (ViewBag.Mensaje != null)
+    {
+        <div class="alert alert-warning msjCentrado">
+            @ViewBag.Mensaje
+        </div>
+    }
+
     <table id="example" class="table table-bordered table-hover">
         <thead>
             <tr>
