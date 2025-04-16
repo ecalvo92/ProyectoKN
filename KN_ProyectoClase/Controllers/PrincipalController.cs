@@ -28,8 +28,8 @@ namespace KN_ProyectoClase.Controllers
             catch (Exception ex)
             {
                 error.RegistrarError(ex.Message, "Get RegistrarCuenta");
-                return View("Error");                
-            }           
+                return View("Error");
+            }
         }
 
         [HttpPost]
@@ -164,8 +164,8 @@ namespace KN_ProyectoClase.Controllers
 
                         string mensaje = $"Hola {info.Nombre}, por favor utilice el siguiente código para ingresar al sistema: {codigoTemporal}";
                         var notificacion = util.EnviarCorreo(info.Correo, mensaje, "Acceso al sistema KN");
-                    
-                        if(notificacion)
+
+                        if (notificacion)
                             return RedirectToAction("IniciarSesion", "Principal");
                     }
 
@@ -187,12 +187,35 @@ namespace KN_ProyectoClase.Controllers
         {
             try
             {
+                if (Session["IdPerfilUsuario"] != null && Session["IdPerfilUsuario"].ToString() == "1")
+                {
+                    return RedirectToAction("Estadisticas", "Principal");
+                }
+
                 var ofertasTop = ConsultarOfertasTop();
                 return View(ofertasTop);
             }
             catch (Exception ex)
             {
                 error.RegistrarError(ex.Message, "Get Inicio");
+                return View("Error");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult Estadisticas()
+        {
+            try
+            {
+                using (var context = new KN_DBEntities())
+                {
+                    var info = context.ConsultarEstadisticas().ToList();
+                    return View(info);
+                }
+            }
+            catch (Exception ex)
+            {
+                error.RegistrarError(ex.Message, "Get Estadisticas");
                 return View("Error");
             }
         }
@@ -240,7 +263,7 @@ namespace KN_ProyectoClase.Controllers
 
                     if (result > 0)
                     {
-                        string mensaje = $"Hola { Session["NombreUsuario"].ToString() }, la postulación en la oferta { model.Nombre} ha sido registrada";
+                        string mensaje = $"Hola {Session["NombreUsuario"].ToString()}, la postulación en la oferta {model.Nombre} ha sido registrada";
                         var notificacion = util.EnviarCorreo(Session["CorreoUsuario"].ToString(), mensaje, "Postulación de Ofertas");
 
                         return RedirectToAction("ConsultarOfertasAplicadas", "Oferta");

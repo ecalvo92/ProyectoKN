@@ -43,15 +43,16 @@
                     <td>@item.EstadoAplicacion.NombreEstado</td>
                     <td>
 
-                        @if (item.Oferta.Cantidad > 0)
+                        @if (item.Oferta.Cantidad > 0 &&
+                            item.Estado != 3 && item.Estado != 4)
                         {
                             using (Html.BeginForm("SeguimientoOfertas", "Oferta"))
                             {
-                            @Html.Hidden("Id", item.Id)
-                            @Html.Hidden("IdOferta", item.IdOferta)
-                            @Html.DropDownList("Estado",
-                                                         (IEnumerable<SelectListItem>)ViewBag.EtapaCombo,
-                                                         new { @class = "form-control", @Required = "true", @onchange = "this.form.submit();" })
+                                @Html.Hidden("Id", item.Id)
+                                @Html.Hidden("IdOferta", item.IdOferta)
+                                @Html.DropDownList("Estado",
+                                                             (IEnumerable<SelectListItem>)ViewBag.EtapaCombo,
+                                                             new { @class = "form-control", @Required = "true", @onchange = "this.form.submit();" })
                             }
                         }
 

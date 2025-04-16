@@ -366,12 +366,13 @@ namespace KN_ProyectoClase.Controllers
 
                 var etapaCombo = new List<SelectListItem>();
 
+                etapaCombo.Add(new SelectListItem { Value = "0", Text = "..." });
                 foreach (var item in info)
                 {
                     etapaCombo.Add(new SelectListItem { Value = item.Id.ToString(), Text = item.NombreEstado });
                 }
 
-                ViewBag.EtapaCombo = etapaCombo;
+                ViewBag.EtapaCombo = etapaCombo.OrderBy(x => x.Value);
             }
         }
 

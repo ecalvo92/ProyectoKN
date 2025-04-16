@@ -131,6 +131,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="ConsultarEstadisticas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="ConsultarOfertas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="ConsultarPuestos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="IniciarSesion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -342,6 +343,7 @@
             <End Role="EstadoAplicacion" EntitySet="EstadoAplicacion" />
             <End Role="UsuariosOferta" EntitySet="UsuariosOferta" />
           </AssociationSet>
+          <FunctionImport Name="ConsultarEstadisticas" ReturnType="Collection(KN_DBModel.ConsultarEstadisticas_Result)" />
         </EntityContainer>
         <ComplexType Name="ConsultarOfertas_Result">
           <Property Type="Int64" Name="Id" Nullable="false" />
@@ -389,6 +391,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="ConsultarEstadisticas_Result">
+          <Property Type="Int32" Name="Cantidad" Nullable="true" />
+          <Property Type="String" Name="NombreEstado" Nullable="false" MaxLength="100" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -508,6 +514,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ConsultarEstadisticas" FunctionName="KN_DBModel.Store.ConsultarEstadisticas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KN_DBModel.ConsultarEstadisticas_Result">
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="NombreEstado" ColumnName="NombreEstado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

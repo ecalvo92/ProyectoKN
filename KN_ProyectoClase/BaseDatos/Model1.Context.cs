@@ -95,5 +95,10 @@ namespace KN_ProyectoClase.BaseDatos
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RegistrarError", idUsuarioParameter, mensajeParameter, origenParameter);
         }
+    
+        public virtual ObjectResult<ConsultarEstadisticas_Result> ConsultarEstadisticas()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ConsultarEstadisticas_Result>("ConsultarEstadisticas");
+        }
     }
 }
