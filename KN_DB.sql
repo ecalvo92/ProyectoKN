@@ -98,6 +98,8 @@ SET IDENTITY_INSERT [dbo].[Error] ON
 GO
 INSERT [dbo].[Error] ([Id], [IdUsuario], [Mensaje], [FechaHora], [Origen]) VALUES (6, 6, N'Acceso denegado a la ruta de acceso ''C:\TP_Universidad\ProyectoKN\KN_ProyectoClase\''.', CAST(N'2025-03-25T19:47:29.123' AS DateTime), N'Post ActualizarOferta')
 GO
+INSERT [dbo].[Error] ([Id], [IdUsuario], [Mensaje], [FechaHora], [Origen]) VALUES (7, 0, N'Referencia a objeto no establecida como instancia de un objeto.', CAST(N'2025-04-15T18:59:50.840' AS DateTime), N'Get Inicio')
+GO
 SET IDENTITY_INSERT [dbo].[Error] OFF
 GO
 
@@ -118,9 +120,9 @@ GO
 
 SET IDENTITY_INSERT [dbo].[Oferta] ON 
 GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (14, 9, 0, CAST(9100.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/14.png')
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (14, 9, 2, CAST(9100.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/14.png')
 GO
-INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (20, 8, 0, CAST(2700.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
+INSERT [dbo].[Oferta] ([Id], [IdPuesto], [Cantidad], [Salario], [Horario], [Disponible], [Imagen]) VALUES (20, 8, 9, CAST(2700.00 AS Decimal(10, 2)), N'Lunes a Viernes de 09:00 am - 03:00 pm', 1, N'/ImagenesOfertas/15.png')
 GO
 SET IDENTITY_INSERT [dbo].[Oferta] OFF
 GO
@@ -160,11 +162,13 @@ GO
 
 SET IDENTITY_INSERT [dbo].[UsuariosOferta] ON 
 GO
-INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (10, 4, 20, CAST(N'2025-04-08T18:46:02.573' AS DateTime), 4)
+INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (1, 7, 14, CAST(N'2025-04-15T18:30:02.840' AS DateTime), 4)
 GO
-INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (11, 4, 14, CAST(N'2025-04-08T18:48:38.893' AS DateTime), 5)
+INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (2, 4, 20, CAST(N'2025-04-15T18:33:56.887' AS DateTime), 4)
 GO
-INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (12, 7, 14, CAST(N'2025-04-08T19:09:14.840' AS DateTime), 4)
+INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (3, 4, 14, CAST(N'2025-04-15T18:34:00.373' AS DateTime), 3)
+GO
+INSERT [dbo].[UsuariosOferta] ([Id], [IdUsuario], [IdOferta], [Fecha], [Estado]) VALUES (4, 7, 20, CAST(N'2025-04-15T19:42:46.297' AS DateTime), 4)
 GO
 SET IDENTITY_INSERT [dbo].[UsuariosOferta] OFF
 GO
@@ -209,6 +213,24 @@ ALTER TABLE [dbo].[UsuariosOferta]  WITH CHECK ADD  CONSTRAINT [FK_UsuariosOfert
 REFERENCES [dbo].[Usuario] ([Id])
 GO
 ALTER TABLE [dbo].[UsuariosOferta] CHECK CONSTRAINT [FK_UsuariosOferta_Usuario]
+GO
+
+CREATE PROCEDURE [dbo].[ConsultarEstadisticas]
+
+AS
+BEGIN
+
+	DECLARE @FechaInicio DATETIME = DATEADD(YEAR, -1, GETDATE())
+	DECLARE @FechaFinal DATETIME = GETDATE()
+
+	SELECT  COUNT(UO.Id) Cantidad, EA.NombreEstado
+	FROM	EstadoAplicacion EA  
+	LEFT JOIN UsuariosOferta UO ON UO.Estado = EA.Id
+	WHERE UO.Fecha BETWEEN @FechaInicio AND @FechaFinal
+	GROUP BY EA.NombreEstado, EA.Id
+	ORDER BY EA.Id
+
+END
 GO
 
 CREATE PROCEDURE [dbo].[ConsultarOfertas]
