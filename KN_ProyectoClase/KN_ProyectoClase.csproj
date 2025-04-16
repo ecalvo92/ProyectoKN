@@ -252,6 +252,9 @@
     <Content Include="Template\img\undraw_profile.svg" />
     <Content Include="Template\js\bootstrap.bundle.js" />
     <Content Include="Template\js\bootstrap.bundle.min.js" />
+    <Content Include="Template\js\chart-bar-demo.js" />
+    <Content Include="Template\js\chart-pie-demo.js" />
+    <Content Include="Template\js\Chart.min.js" />
     <Content Include="Template\js\generales.js" />
     <Content Include="Template\js\jquery.easing.js" />
     <Content Include="Template\js\jquery.easing.min.js" />

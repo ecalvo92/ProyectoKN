@@ -220,6 +220,16 @@ namespace KN_ProyectoClase.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult EstadisticasGrafico()
+        {
+            using (var context = new KN_DBEntities())
+            {
+                var info = context.ConsultarEstadisticas().ToList();
+                return Json(info);
+            }
+        }
+
         public List<ConsultarOfertas_Result> ConsultarOfertasTop()
         {
             using (var context = new KN_DBEntities())
